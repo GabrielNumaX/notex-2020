@@ -32,7 +32,7 @@ userController.postUser = async (req, res) => {
     await newUser.save();
 
     res.json({
-        note: 'User created'
+        user: 'User created'
     });
 };
 

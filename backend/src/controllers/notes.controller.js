@@ -2,24 +2,24 @@ const notesModel = require('../models/notes.model');
 
 const notesController = {};
 
-notesController.getNotes = async ((req, res) => {
+notesController.getNotes = async (req, res) => {
 
     const notes = await notesModel.find();
 
     res.json(notes)
-    });
+};
 
-notesController.getNote = async ((req, res) => {
+notesController.getNote = async (req, res) => {
 
     const id = req.params.id;
 
     const note = await notesModel.findById(id);
 
     res.json(note);
-})
+};
 
 
-notesController.postNotes = async ((req, res) => {
+notesController.postNote = async (req, res) => {
 
     const {note, author, date} = req.body;
      
@@ -34,32 +34,28 @@ notesController.postNotes = async ((req, res) => {
     res.json({
         note: 'Note created'
     });
-});
+};
 
-notesController.putNotes = async ((req, res) => {
+notesController.putNote = async (req, res) => {
 
     const id = req.params.id;
 
     const {note, author, date} = req.body;
-     
-    // const putNote = {
-    //     note, 
-    //     author,
-    //     date
-    // };
 
-    await putNote.findOneAndUpdate({id}, {
+    await notesModel.findByIdAndUpdate({_id: id}, {
         note,
         author,
         date
     });
 
     res.json({
-        notes: 'Note Updated'
+        note,
+        author,
+        date
     });
-});
+};
 
-notesController.deleteNotes = async ((req, res) => {
+notesController.deleteNote = async (req, res) => {
 
     const id = req.params.id;
 
@@ -69,6 +65,6 @@ notesController.deleteNotes = async ((req, res) => {
         notes: 'Note Deleted'
     });
 
-});
+};
 
 module.exports = notesController;

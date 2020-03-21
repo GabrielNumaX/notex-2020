@@ -10,5 +10,6 @@ appEx.use(express.json());
 
 //ROUTES
 appEx.use('/api/user', require('./routes/userRoute'));
+appEx.use('/api/notes', require('./routes/notesRoute'));
 
 module.exports = appEx;
