@@ -1,0 +1,68 @@
+* {
+    box-sizing: border-box;
+}
+
+.Nav {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color:#2E2C6D;
+    flex-wrap: wrap;
+    position: fixed;
+    /* this and margin-top: on below component avoids overlapping */
+    top: 0;
+}
+
+.DivH2 {
+    margin-left: 5%;
+}
+
+.DivH2 h2 {
+    margin: 0;
+    padding: 0;
+    box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.1),
+ 	            2px 2px 6px rgba(0,0,0,0.8),
+  	            inset -2px -2px 10px rgba(255, 255, 255, 0.05),
+                inset 2px 2px 10px rgba(0,0,0,0.5);
+    width: 128%;
+    height: 40px;
+    border-radius: 3px;
+    text-align: center;
+    padding-top: 2px;
+    background-color: #403d98;
+    color: #d1d959;
+}
+
+.DivUl {
+    margin-right: 8%;
+    display: flex;
+}
+
+.DivUl ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.DivUl ul li {
+    display: inline-block;
+    margin: 0 12px;
+    width: 70px;
+    height: 25px;
+    text-align: center;
+    border-radius: 3px;
+    color: #d1d959;
+}
+
+.DivUl ul li:hover {
+    cursor: pointer;
+    background-color: #403d98;
+    color: #d1d959;
+    box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.1),
+ 	            2px 2px 6px rgba(0,0,0,0.8),
+  	            inset -2px -2px 10px rgba(255, 255, 255, 0.05),
+                inset 2px 2px 10px rgba(0,0,0,0.5);
+}

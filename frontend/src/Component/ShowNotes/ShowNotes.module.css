@@ -1,0 +1,122 @@
+* {
+    box-sizing: border-box;
+}
+
+.ShowContainer {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: calc(100vh - 60px);
+    justify-content: space-around;
+    /* margin-top: 60px; */
+    margin-top: 100px;
+    /* this sets height for every note independently (2 aside by side)  */
+    align-items: flex-start;
+
+}
+
+.Note1 {
+    background-color: #403d98;
+    width: 70%;
+    height: auto;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 3px;
+    /* flex-basis: content; */
+
+    box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.1),
+ 	            2px 2px 6px rgba(0,0,0,0.8),
+  	            inset -2px -2px 10px rgba(255, 255, 255, 0.05),
+                inset 2px 2px 10px rgba(0,0,0,0.5);
+
+}
+
+.DivAuthor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 92%;
+    height: 50px;
+    color: #dfe58d;
+
+}
+
+.DivAuthor h4, .DivAuthor p{
+    margin: 0;
+    padding: 0;
+}
+
+.PNote {
+    background-color: whitesmoke;
+    margin: 0;
+    padding: 0;
+    padding: 30px 8% 40px;
+    line-height: 1.5;
+    width: 100%;
+    height: calc(100% - 100px);
+}
+
+.DivBtns {
+    width: 90%;
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.DivBtns button {
+    padding: 6px 10px;
+    margin: 0 22px;
+    border-radius: 3px;
+    cursor: pointer;
+    /* background-color: #d1d959; */
+    background-color: #403d98;
+    /* color: #2E2C6D; */
+    color: #d1d959;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    border: none;
+    box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.1),
+ 	            2px 2px 6px rgba(0,0,0,0.8),
+  	            inset -2px -2px 10px rgba(255, 255, 255, 0.05),
+                inset 2px 2px 10px rgba(0,0,0,0.5);
+}
+
+.DivBtns button:last-of-type {
+    margin: 0;
+}
+
+.I {
+    margin-right: 5px;
+}
+
+.Note2 {
+    background-color: crimson;
+    width: 42%;
+    height: 300px;
+    margin-bottom: 30px;
+}
+
+.Note3 {
+    background-color: darkblue;
+    width: 42%;
+    height: 300px;
+    margin-bottom: 30px;
+}
+
+.Note4 {
+    background-color: lawngreen;
+    width: 42%;
+    height: 300px;
+    margin-bottom: 30px;
+}
+
+.Note5 {
+    background-color: lightcoral;
+    width: 40%;
+    height: 300px;
+    margin-bottom: 30px;
+}
