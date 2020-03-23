@@ -18,41 +18,47 @@ notesController.getNote = async (req, res) => {
     res.json(note);
 };
 
+//ADD NOTE TO USER
+//ADD TUTO TO CATEG
 
-notesController.postNote = async (req, res) => {
+// notesController.postNote = async (req, res) => {
 
-    const {note, author, date} = req.body;
+//     const userId
+//     const noteId;
+
+//     const newNote = await notesModel.findByIdAndUpdate()
+// }
+
+//ESTE SE HACE POR ID DE USER
+
+// notesController.postNote = async (req, res) => {
+
+//     const {note, author, date} = req.body;
      
-    const newNote = new notesModel({
-        note, 
-        author,
-        date
-    });
+//     const newNote = new notesModel({
+//         note, 
+//         author,
+//         date
+//     });
 
-    await newNote.save();
+//     await newNote.save();
 
-    res.json({
-        note: 'Note created'
-    });
-};
+//     res.json({
+//         note: 'Note created'
+//     });
+// };
 
 notesController.putNote = async (req, res) => {
 
     const id = req.params.id;
 
-    const {note, author, date} = req.body;
+    const {note} = req.body;
 
-    await notesModel.findByIdAndUpdate({_id: id}, {
+    const putNote = await notesModel.findByIdAndUpdate({_id: id}, {
         note,
-        author,
-        date
     });
 
-    res.json({
-        note,
-        author,
-        date
-    });
+    res.json(putNote);
 };
 
 notesController.deleteNote = async (req, res) => {

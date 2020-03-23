@@ -6,28 +6,25 @@ const {
     postUser, 
     getUser, 
     putUser, 
-    deleteUser
+    deleteUser,
+    postUserNote,
+    getUserNotes,
 } = require('../controllers/user.controller');
 
 
 router.route('/')
     .get(getUsers)
-    // .get(userController.getUser)
     .post(postUser);
-    // .post((req ,res) => {
-    //     res.json({
-    //         user: 'User posted'
-    //     })
-    // })
-    
-    // .get((req, res) => {
-    //     res.send('User route');
-    // });
 
-    
 router.route('/:id')
     .get(getUser)
     .put(putUser)
     .delete(deleteUser);
+
+router.route('/:id/notes')
+    .post(postUserNote)
+    .get(getUserNotes);
+    // .post(addNoteToUser);
+
 
 module.exports = router;

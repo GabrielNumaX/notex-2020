@@ -3,7 +3,6 @@ const router = Router();
 
 const {
     getNotes, 
-    postNote, 
     getNote, 
     putNote, 
     deleteNote
@@ -12,7 +11,7 @@ const {
 
 router.route('/')
     .get(getNotes)
-    .post(postNote);
+    // .post(postNote);
     
 router.route('/:id')
     .get(getNote)
