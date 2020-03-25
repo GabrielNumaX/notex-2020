@@ -11,59 +11,36 @@ userController.getUsers = async (req, res) => {
 }
 
 userController.postUserValidate = async (req, res) => {
+        
+    const {user, password} = req.body;
 
-    // const users = await userModel
-    //                         .find()
-    //                         .populate('notes');
-
-    // res.json(users)
-    // res.json({user: 'user exists from controller'});
-
-    const userBody = req.body;
-    // const passwordBody = req.body.password;
-
-    const userResponse = await userModel.findOne(userBody);
-
-    // const {user, password} = userResponse;
-    //tengo que guardar el user primero
-
-    // res.json(userBody);
-    
-    await userBody.findOne(function(err) {
-        if (err) {
+    // attempt to authenticate user
+    userModel.getAuthenticated(user, password, function(err, user, reason) {
+        if(err) {
             throw err;
         }
-        
-        const {user, password} = userBody;
 
-        // attempt to authenticate user
-        userModel.getAuthenticated(user, password, function(err, user, reason) {
-            if(err) {
-                throw err;
-            }
+        // login was successful if we have a user
+        if(user) {
 
-            // login was successful if we have a user
-            if(user) {
-                //handle login
+            //handle login
+            res.json({login: true});
+            return;
+        }
 
-                res.json({login: true});
-                return;
-            }
-
-            // otherwise we can determine why we failed
-            const reasons = userResponse.failedLogin;
-            switch (reasons) {
-                case reasons.NOT_FOUND:
-                    res.json({login: 'Login Failed'});
-                    break;
-                case reasons.PASSWORD_INCORRECT:
+        // otherwise we can determine why we failed
+        const reasons = userResponse.failedLogin;
+        switch (reasons) {
+            case reasons.NOT_FOUND:
                 res.json({login: 'Login Failed'});
-                    break;
-                case reasons.MAX_ATTEMPTS:
-                    res.json({login: 'Login Failed'});
-                    break;
-            }
-        });
+                break;
+            case reasons.PASSWORD_INCORRECT:
+            res.json({login: 'Login Failed'});
+                break;
+            case reasons.MAX_ATTEMPTS:
+                res.json({login: 'Login Failed'});
+                break;
+        }
     });
 };
 
