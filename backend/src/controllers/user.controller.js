@@ -28,22 +28,37 @@ userController.postUserValidate = async (req, res) => {
         if(user) {
 
             //handle login
+            // res.json({login: true});
             res.json({login: true});
+
             return;
         }
 
+        //THIS IS FROM THE MODEL METHODS
+        // const reasons = userSchema.statics.failedLogin = {
+        //     NOT_FOUND: 0,
+        //     PASSWORD_INCORRECT: 1,
+        //     MAX_ATTEMPTS: 2
+        // };
+        
+
         // otherwise we can determine why we failed
-        const reasons = userResponse.failedLogin;
-        switch (reasons) {
+        const reasons = userModel.failedLogin;
+        // console.log(reasons);
+        //aca estaba es ERROR
+        switch (reason) {
             case reasons.NOT_FOUND:
-                res.json({login: 'Login Failed'});
+                // res.json({login: 'Login Failed'});
+                res.json({login: false});
                 break;
             case reasons.PASSWORD_INCORRECT:
-            // res.json({login: 'Login Failed'});
-            res.json({login: false});
+                // res.json({login: 'Login Failed'});
+                res.json({login: false});
+                // console.log('wrong password');
                 break;
             case reasons.MAX_ATTEMPTS:
-                res.json({login: 'Login Failed'});
+                // res.json({login: 'Login Failed'});
+                res.json({login: false});
                 break;
         }
     });

@@ -21,3 +21,5 @@
 /api/:id/notes
 	->postUserNote
  	->getUserNote
+
+Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://localhost:3000/api/user. (Reason: CORS header ‘Access-Control-Allow-Origin’ does not match ‘http://localhost:3000’).

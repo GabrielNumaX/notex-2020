@@ -75,7 +75,9 @@ userSchema.methods.incLoginAttempts = function(cb) {
     // if we have a previous lock that has expired, restart at 1
     if(this.lockUntil && this.lockUntil < Date.now()){
 
-        return this.update({
+        //ALL .update where changed to avoid DEPRECATION
+        // return this.update({
+        return this.updateOne({
             $set: {loginAttempts: 1},
             $unset: {lockUntil: 1}
         }, cb);
@@ -89,7 +91,8 @@ userSchema.methods.incLoginAttempts = function(cb) {
         updates.$set = {lockUntil: Date.now() + LOCK_TIME};
     }
 
-    return this.update(updates, cb);
+    // return this.update(updates, cb);
+    return this.updateOne(updates, cb);
 }
 
 const reasons = userSchema.statics.failedLogin = {
@@ -143,7 +146,8 @@ userSchema.statics.getAuthenticated = function(username, password, cb) {
                     $unset: {lockUntil: 1}
                 };
 
-                return user.update(updates, function(err) {
+                // return user.update(updates, function(err) {
+                return user.updateOne(updates, function(err) {    
                     if(err) {
                         return cb(err);
                     }
