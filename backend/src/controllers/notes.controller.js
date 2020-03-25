@@ -4,7 +4,9 @@ const notesController = {};
 
 notesController.getNotes = async (req, res) => {
 
-    const notes = await notesModel.find();
+    const notes = await notesModel
+                            .find()
+                            .populate('author');
 
     res.json(notes)
 };
@@ -13,7 +15,10 @@ notesController.getNote = async (req, res) => {
 
     const id = req.params.id;
 
-    const note = await notesModel.findById(id);
+    const note = await notesModel
+                        .findById(id)
+                        .populate('author');
+
 
     res.json(note);
 };

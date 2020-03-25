@@ -1,0 +1,23 @@
+/api/notes
+	->getNotes
+
+/api/notes/:id
+	->getNote
+	->putNote
+	->deleteNote
+
+/api/user
+	->getUsers
+	->postUserValidate
+
+/api/user/create
+	->postUser
+
+/api/user/:id
+	->getUser
+	->putUser
+	->deleteUser
+
+/api/:id/notes
+	->postUserNote
+ 	->getUserNote

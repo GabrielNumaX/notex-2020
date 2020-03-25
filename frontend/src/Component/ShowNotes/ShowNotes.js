@@ -38,7 +38,7 @@ class ShowNotes extends Component {
                 <div className={css.Note1} key={item._id}>
 
                     <div className={css.DivAuthor}>
-                        <h4>{item.author}</h4>
+                        <h4>{item.author.user}</h4>
                         <p>{format(item.date)}</p>
                     </div>
 

@@ -1,0 +1,114 @@
+.Header {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color:#2E2C6D;
+}
+
+.Header h1 {
+    margin: 0;
+    padding: 0;
+    letter-spacing: 1px;
+    font-size: 35px;
+    color: #d1d959;
+    padding: 4px 8px;
+    border-radius: 3px;
+    box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.1),
+ 	            2px 2px 6px rgba(0,0,0,0.8);
+}
+
+.DivForm {
+    width: 100%;
+    height: calc(100vh - 70px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Form {
+    width: 30%;
+    border: 1px solid black;
+    border-radius: 3px;
+    box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.1),
+                 2px 2px 6px rgba(0,0,0,0.8);
+    background-color: whitesmoke;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px 40px 30px;
+}
+
+.DivH3 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+      
+}
+
+.DivH3 h3 {
+    margin: 0;
+    padding: 0;
+}
+
+.DivInputs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.DivInputs p {
+    margin-bottom: 2px;
+}
+
+.DivInputs input {
+    width: 100%;
+    height: 25px;
+}
+
+.PWarning {
+    margin: 0;
+    padding-top: 2px;
+    padding-bottom: 35px;
+    margin: 0 auto;
+    color: red;
+    display: none;
+}
+
+.DivBtn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.DivBtn input {
+    margin-top: 30px;
+    padding: 6px 12px;
+    color: #dfe58d;
+    background-color: #403d98;
+    border: none;
+    border-radius: 3px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.1),
+                 2px 2px 6px rgba(0,0,0,0.8);
+
+}
+
+.Footer {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color:#2E2C6D;
+    color: #d1d959;
+}

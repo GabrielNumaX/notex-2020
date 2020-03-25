@@ -14,8 +14,12 @@ userController.postUserValidate = async (req, res) => {
         
     const {user, password} = req.body;
 
+    // const response = await userModel.find(req.body);
+
+    // res.json(response);
+
     // attempt to authenticate user
-    userModel.getAuthenticated(user, password, function(err, user, reason) {
+    await userModel.getAuthenticated(user, password, function(err, user, reason) {
         if(err) {
             throw err;
         }
@@ -35,7 +39,8 @@ userController.postUserValidate = async (req, res) => {
                 res.json({login: 'Login Failed'});
                 break;
             case reasons.PASSWORD_INCORRECT:
-            res.json({login: 'Login Failed'});
+            // res.json({login: 'Login Failed'});
+            res.json({login: false});
                 break;
             case reasons.MAX_ATTEMPTS:
                 res.json({login: 'Login Failed'});
