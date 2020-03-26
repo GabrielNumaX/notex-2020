@@ -78,7 +78,11 @@
     padding-bottom: 35px;
     margin: 0 auto;
     color: red;
-    display: none;
+    display: block;
+}
+
+.PWarningShow {
+    display: block;
 }
 
 .DivBtn {

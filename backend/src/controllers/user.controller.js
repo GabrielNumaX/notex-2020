@@ -27,9 +27,15 @@ userController.postUserValidate = async (req, res) => {
         // login was successful if we have a user
         if(user) {
 
-            //handle login
-            // res.json({login: true});
-            res.json({login: true});
+            const userData = userModel.findOne(user);
+
+            //it must be a better way to do this
+            res.json({
+                _id: userData._conditions._id,
+                user: userData._conditions.user,
+                login: true
+            });
+            // console.log(userData._conditions.user);
 
             return;
         }
@@ -44,7 +50,6 @@ userController.postUserValidate = async (req, res) => {
 
         // otherwise we can determine why we failed
         const reasons = userModel.failedLogin;
-        // console.log(reasons);
         //aca estaba es ERROR
         switch (reason) {
             case reasons.NOT_FOUND:
@@ -150,7 +155,8 @@ userController.getUserNotes = async (req, res) => {
     const id = req.params.id;
 
     const user = await userModel.findById(id)
-                                .populate('notes');
+                                .populate('notes')
+                                
 
     res.json(user.notes);
 
