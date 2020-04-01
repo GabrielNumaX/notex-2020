@@ -2,11 +2,15 @@
     box-sizing: border-box;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+
 .ShowContainer {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    min-height: calc(100vh - 60px);
+    /* min-height: calc(100vh - 60px); */
+    min-height: 100vh;
+    /* min-height: 100vh; */
     justify-content: space-around;
     /* margin-top: 60px; */
     margin-top: 100px;
@@ -38,25 +42,35 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 92%;
+    width: 100%;
     height: 50px;
     color: #dfe58d;
-
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }
 
 .DivAuthor h4, .DivAuthor p{
-    margin: 0;
+    margin: 0 6%;
     padding: 0;
+}
+
+.DivAuthor h4 {
+    font-size: 26px;
+}
+
+.DivAuthor p {
+    font-size: 18px;
 }
 
 .PNote {
     background-color: whitesmoke;
     margin: 0;
     padding: 0;
-    padding: 30px 8% 40px;
+    padding: 30px 20px 40px;
     line-height: 1.5;
-    width: 100%;
+    width: 88%;
     height: calc(100% - 100px);
+    font-family: 'Roboto', sans-serif;
 }
 
 .DivBtns {
@@ -68,6 +82,8 @@
 }
 
 .DivBtns button {
+    font-size: 16px;
+    font-weight: bold;
     padding: 6px 10px;
     margin: 0 22px;
     border-radius: 3px;
@@ -76,7 +92,7 @@
     background-color: #403d98;
     /* color: #2E2C6D; */
     color: #d1d959;
-    font-weight: bold;
+    
     letter-spacing: 0.5px;
     border: none;
     box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.1),
@@ -92,7 +108,7 @@
 .I {
     margin-right: 5px;
 }
-
+/* 
 .Note2 {
     background-color: crimson;
     width: 42%;
@@ -119,4 +135,4 @@
     width: 40%;
     height: 300px;
     margin-bottom: 30px;
-}
+} */

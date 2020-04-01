@@ -1,37 +1,62 @@
 import React from 'react';
 
-import {Link} from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faUser, faClipboard} from '@fortawesome/free-solid-svg-icons';
+
+import { Link } from 'react-router-dom';
 
 import css from './Header.module.css';
 // import { Component } from 'react';
 
 const Header = (props) => {
 
-    // console.log(props);  
+    //this is to use REDUX with HOOKS
+    const dispatch = useDispatch();
+
+    const user = useSelector(redux => redux.user);
 
     return(      
         <nav className={css.Nav}>
 
             <div className={css.DivH2}>
-                <h2>Welcome {props.userToShow}</h2>
+                <h2>Welcome {user}</h2>
             </div>
             
 
             <div className={css.DivUl}>
                 <ul>
 
-                    <li><Link to="/" className={css.Link}>Home</Link></li>
+                    <li><Link to="/" className={css.Link}>
+                        <FontAwesomeIcon icon={faHome} className={css.I}/>
+                        Home
+                        </Link>
+                    </li>
+
                     <li className={css.dropdown}>
-                        <Link to="/user" className={css.Link}>User</Link>
+                        {/* ACA IRIA EL LINK AL USER */}
+                        <Link to="/user" className={css.Link}>
+                            <FontAwesomeIcon icon={faUser} className={css.I}/>
+                            User
+                        </Link>
+                        
                         <div className={css.dropdownUser}>
-                            <p onClick={props.logOut}>Log Out</p>
+                            
+                            <p>Profile</p>
+
+                            <p onClick={() => dispatch({type: 'LOG_OUT'})}>Log Out</p>
+
                         </div>
                     </li>
 
                     <li className={css.dropdown}>
-                        <Link to="/notes" className={css.Link}>Notes</Link>
+                        <Link to="/" className={css.Link}>
+                            <FontAwesomeIcon icon={faClipboard} className={css.I}/>
+                            Notes
+                        </Link>
                         <div className={css.dropdownNote}>
-                            <Link to="/create">Create Note</Link> 
+                            <Link to="/notes">Create Note</Link> 
                         </div>
                     </li>
 

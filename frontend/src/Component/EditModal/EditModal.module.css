@@ -1,28 +1,66 @@
-* {
+  * {
     box-sizing: border-box;
-}
+  }
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
-
-.CreateContainer {
-    width: 100%;
+  
+  /* The Modal (background) */
+ .modal {
+    /* display: none; Hidden by default */
+    display: block;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modalContent {
+    /* background-color: whitesmoke; */
     display: flex;
-    flex-wrap: wrap;
-    min-height: calc(100vh - 60px);
-    justify-content: space-around;
-    /* margin-top: 60px; */
-    margin-top: 100px;
-    /* this sets height for every note independently (2 aside by side)  */
-    align-items: flex-start;
-}
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: rgb(222,222,238);
+    margin: 5% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 3px;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .close {
+    margin-right: 4%;
+    color: #d1d959;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  } 
+
+
+/* this is re used from CreateNote */
 
 .DivCreate {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    width: 50%;
-    height: 330px;
+    width: 90%;
+    /* min-height: 330px; */
+    height: 100%;
     border-radius: 3px;
     /* background-color: whitesmoke; */
     background-color: #403d98;
@@ -45,13 +83,16 @@
 }
 
 .DivAuthor h4 {
-    margin-left: 6%;
-    font-size: 26px;
+    margin-left: 4%;
 }
 
 .DivTextarea {
-    width: 88%;
-    height: calc(100% - 100px);
+    width: 92%;
+    /* height: 230px; */
+    /* height: calc(100% - 100px); */
+    /* height: -moz-calc(100% - 100px);
+    height: -webkit-calc(100% - 100px);
+    height: calc(100% - 100px); */
     background-color: whitesmoke;
 }
 
@@ -73,8 +114,6 @@
 }
 
 .DivBtn button {
-    font-size: 16px;
-    font-weight: bold;
     padding: 6px 10px;
     margin: 0 22px;
     border-radius: 3px;

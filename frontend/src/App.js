@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import {BrowserRouter, Switch ,Route, Redirect} from 'react-router-dom';
+// import axios from 'axios';
+import {BrowserRouter, Switch ,Route} from 'react-router-dom';
+
+import {connect} from 'react-redux';
 
 import './App.css';
 
@@ -11,60 +13,14 @@ import ShowNotes from './Component/ShowNotes/ShowNotes';
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
 
-    this.state = {
-      loggedIn: localStorage.getItem('notexLog'),
-      user: '',
-      password: '',
-      userToShow: '',
-      userId: '',
-    }
-  }
-
-  onInputChange = (e) => {
-    this.setState({
-        [e.target.name]: e.target.value
-    });
-
-    // console.log(this.state)
-  }
-
-  logInSubmit = (e) => {
-      e.preventDefault();
-
-      axios.post('http://localhost:3000/api/user', {
-          user: this.state.user,
-          password: this.state.password
-      })
-      .then(response => {
-
-          localStorage.setItem('notexLog', true);
-          localStorage.setItem('notexUser', response.data.user);
-          localStorage.setItem('notexUserId', response.data._id);
-
-          this.setState({
-              user: '',
-              password: '',
-              // loggedIn: response.data.login,
-              loggedIn: localStorage.getItem('notexLog'),
-              userToShow: localStorage.getItem('notexUser'),
-              userId: localStorage.getItem('notexUserId')    
-          })
-      })
-      .catch(err => console.log(err))
-  } 
-
-  logOut = () => {
-    localStorage.setItem('notexLog', false);
-
-    this.setState({
-      loggedIn: localStorage.getItem('notexLog')
-    });
-
-    console.log(this.state.loggedIn);
-  }
+  //   this.state = {
+  //     user: '',
+  //     password: '',
+  //   }
+  // }
 
   render() {
 
@@ -73,58 +29,48 @@ class App extends Component {
 
       <BrowserRouter>
 
+
+        {/* <Route path="/" render={(routeProps) => this.props.reduxLoggedIn ?
+                                              <ShowNotes {...routeProps}/>
+                                              :
+                                              <Home/>
+                                              }/> */}
+
         <Switch>
 
-          <Route path="/notes" component={ShowNotes}/>
-          
-          {/* <Route path="/notes" render={(routeProps) => 
+          {/* <Route path="/notes" component={ShowNotes}/>   */}
 
-                                this.state.loggedIn ?
+          {/* <Route path="/" component={Home}/> */}
 
-                                <ShowNotes {...routeProps}
-                                userToShow={localStorage.getItem('notexUser')}
-                                logOut={this.logOut}
-                                userId={localStorage.getItem('notexUserId')}
-                                loggedIn={localStorage.getItem('notexLog')}/>
-                              :
-                              <Redirect to="/"/>
-                              }>
-          </Route> */}
+          {/* <Route path="/" render={(routeProps) => this.props.reduxLoggedIn ?
+                                                  <ShowNotes {...routeProps}/>
+                                                  :
+                                                  <Redirect to={'/'}/>
+                                                  }/> */}
 
-          <Route path="/create" 
-                  render={(routeProps) => 
+          <Route path="/" exact render={(routeProps) => this.props.reduxLoggedIn ?
+                                                  <ShowNotes {...routeProps}/>
+                                                  :
+                                                  <Home/>
+                                                  }/>
 
-                    this.state.loggedIn ?
+          <Route path="/notes" render={(routeProps) => this.props.reduxLoggedIn ?
+                                                    <CreateNote {...routeProps}/>
+                                                  :
+                                                  <Home/>}
+                                                  />
 
-                    <CreateNote {...routeProps}
-                    userToShow={localStorage.getItem('notexUser')}
-                    userId={localStorage.getItem('notexUserId')}
-                    logOut={this.logOut}/>
-                    :
-                    <Redirect to="/"/>
-                  }>
-          </Route>
+          {/* <Route path="" render={(routeProps) => this.state.loggedin ? 
+					<Component {...routeProps}/> 
+					: 
+					<Redirect to={"/url de component"}/>} 
+          /> */}
+      
+          {/* <Route path="/notes" component={CreateNote}/> */}
 
-          <Route path="/" exact 
-                render={
-                  (routeProps) => 
-                  
-                  // !this.state.loggedIn ?
+          {/* <Route path="/create" component={CreateNote}/> */}
 
-                  <Home {...routeProps} 
-                        onInputChange={(e) => this.onInputChange(e)}
-                        onLogInSubmit={(e) => this.logInSubmit(e)}
-                        userValue={this.state.user}
-                        passwordValue={this.state.password}
-                        userToShow={this.state.userToShow}
-                        userId={this.state.userId}/>
-                // :
-                // <Redirect to={"/notes"}/>     
-          }/>   
-                  
-
-          {/* <CreateNote></CreateNote> */}
-          {/* <ShowNotes></ShowNotes> */}
+          {/* <Route path="/" component={Home}/> */}
 
         </Switch>
       
@@ -135,4 +81,27 @@ class App extends Component {
   }
 }
 
-export default App;
+// this reads from STORE
+const mapGlobalStateToProps = (globalState) => {
+  return {
+      reduxUser: globalState.user,
+      reduxUserId: globalState.userId,
+      reduxLoggedIn: globalState.loggedIn
+  }
+}
+
+// this writes to STORE
+const mapDispatchToProps = (dispatch) => {
+  return {
+      userAndId: (userProp, userIdProp) => {
+          dispatch({type: 'USER_AND_ID', userAction: userProp, userIdAction: userIdProp})        
+      },
+      logIn: (loggedInProp) => {
+          dispatch({type: 'LOG_IN', loggedInAction: loggedInProp})
+      },
+      logOut: (loggedInProp) => {
+        dispatch({type: 'LOG_OUT', loggedInAction: loggedInProp})
+    },
+  }
+}
+export default connect(mapGlobalStateToProps, mapDispatchToProps)(App);

@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const appEx = express();
 
-appEx.set('port', process.env.PORT || 3000);
+appEx.set('port', process.env.PORT || 3030);
 
 
 //MIDDLEWARE

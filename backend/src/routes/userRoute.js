@@ -26,7 +26,8 @@ router.route('/:id')
     .put(putUser)
     .delete(deleteUser);
 
-router.route('/:id/notes')
+// router.route('/:id/notes')
+router.route('/note/:id')
     .post(postUserNote)
     .get(getUserNotes);
     // .post(addNoteToUser);

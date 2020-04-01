@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+}
+
+.Footer {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color:#2E2C6D;
+    color: #d1d959;
+    margin-top: 60px;
+    bottom: 0;
+}
+
+.DivIcon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+    font-size: 22px;
+}
+
+.DivIcon h3 {
+    margin: 0;
+    padding: 0;
+}
+
+.DivIcon a {
+    color: #d1d959;
+}
+
+.I {
+   font-size: 28px;
+}
+

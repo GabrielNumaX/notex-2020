@@ -6,6 +6,8 @@
 	->putNote
 	->deleteNote
 
+5e7c52c6102867549043cf29
+
 /api/user
 	->getUsers
 	->postUserValidate
@@ -18,8 +20,10 @@
 	->putUser
 	->deleteUser
 
-/api/:id/notes
+/api/user/:id/notes
 	->postUserNote
  	->getUserNote
+
+http://192.168.56.1:3001
 
 Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at http://localhost:3000/api/user. (Reason: CORS header ‘Access-Control-Allow-Origin’ does not match ‘http://localhost:3000’).

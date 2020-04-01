@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+
+.DivLoader {
+    width: 100vw;
+    height: 100vh;
+    background-color: #2E2C6D;
+}
+
+.LoaderRing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 180px;
+    height: 180px;
+
+    background: transparent;
+
+    border: 4px solid #403c5c;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 170px;
+
+    font-family: 'Roboto', sans-serif;
+    font-size: 2.8vw;
+    color: #d1d959;
+    /* text-shadow: 0 0 10px #d1d959; */
+    letter-spacing: 2px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    animation: textGlow 2s linear infinite;
+}
+
+.LoaderRing::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    border: 4px solid transparent;
+    border-top: 4px solid #d1d959;
+    border-right: 4px solid #d1d959;
+    border-radius: 50%;
+    animation: animate 2s linear infinite;
+
+}
+
+.Span {
+    display: block;
+    position: absolute;
+    top: calc(50% - 2px);
+    left: 50%;
+    width: 50%;
+    height: 4px;
+    background: transparent;
+    transform-origin: left;
+    animation: animateCircle 2s linear infinite;
+}
+
+.Span::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #d1d959;
+    top: -6px;
+    right: -8px;
+    box-shadow: 0 0 20px #d1d959;
+}
+
+@keyframes animate {
+
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes animateCircle {
+
+    0% {
+        transform: rotate(45deg);
+    }
+    100% {
+        transform: rotate(405deg);
+    }
+}
+@keyframes textGlow {
+
+    0% {
+        text-shadow: 0 0 5px #d1d959;
+    }
+    100% {
+        text-shadow: 0 0 20px #d1d959;
+    }
+}

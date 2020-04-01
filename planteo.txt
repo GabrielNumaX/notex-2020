@@ -1,0 +1,18 @@
+para manejar el login y el tema de las rutas habria que:
+
+-usar redux para un global state de login 
+-tambien localStorage
+
+Para las rutas
+
+-hay que lograr que tenga el punto de acceso path="/"
+	(esto tendria q estar afuera de switch o no???)
+
+-que luego valide y vaya a path="/notes" y asi
+
+-el tema es que los Link estan en el Header entonces al Header
+	hay que ponerlo como component en los otros components
+	pasarle las functions como props->(desde donde, que parent?)
+
+-luego que segun el Link vaya path="/create" o path="/user" para
+	las diferentes funcionalidades

@@ -1,3 +1,12 @@
+/* this is to apply calc on EditModal .DivTextarea */
+/* html, body {
+  height: 100%;
+} */
+
+* {
+  font-family: 'Comic Neue', cursive;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -6,6 +15,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: rgb(222,222,238);
+  /* min-height: 100vh; */
 }
 
 code {

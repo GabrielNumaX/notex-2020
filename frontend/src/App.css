@@ -1,3 +1,8 @@
+/* this is to apply calc on EditModal .DivTextarea
+html, body {
+  height: 100%;
+} */
+
 .App {
   text-align: center;
 }

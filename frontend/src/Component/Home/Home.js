@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
-// import axios from 'axios';
+
+import {connect} from 'react-redux';
 
 import css from './Home.module.css';
-// import Axios from 'axios';
+import axios from 'axios';
+
+import Footer from '../Footer/Footer';
+
+import { ApiRoutes as Api } from '../../Api/Api';
 
 class Home extends Component {
 
@@ -10,70 +15,69 @@ class Home extends Component {
         super(props);
 
         this.state = {
-            loggedIn: false,
             user: '',
             password: '',
+            warning: [css.PWarning],
         }
     }
 
-    // onInputChange = (e) => {
-    //     this.setState({
-    //         [e.target.name]: e.target.value
-    //     })
+    onInputChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
 
-    //     // if(document.hasFocus(e.target.name) === 'password' && e.target.keyCode === 13){
-    //     //     // this.logInSubmit(e);
-    //     //     alert('yes');
-    //     // }
-    // }
+    logInSubmit = (e) => {
+        e.preventDefault();
 
-    // logInSubmit = (e) => {
-    //     e.preventDefault();
+        // axios.post('http://localhost:3030/api/user', {
+        axios.post(Api.USER, {
+            user: this.state.user,
+            password: this.state.password
+        })
+        .then(response => {
+            this.setState({
+                user: '',
+                password: '',  
+            });
 
-    //     Axios.post('http://localhost:3000/api/user', {
-    //         user: this.state.user,
-    //         password: this.state.password
-    //     })
-    //     .then(response => {
-    //         this.setState({
-    //             user: '',
-    //             password: '',
-    //             loggedIn: response.data.login    
-    //         })
+            localStorage.setItem('notexLog', response.data.login);
 
-    //         //ACA RESPONSE CON _id, user y login NO SE SI SIRVE PARA LO SIGUIENTE
-    //         console.log(response.data);
+            const userData = {
+                user: response.data.user,
+                userId: response.data._id,
+            }
 
-    //         const warning = document.getElementsByClassName(css.PWarning)[0];
+            localStorage.setItem('notexUserData', JSON.stringify(userData));
+
+            // let loginValue = localStorage.getItem('notexLog');
 
 
-    //         //ESTA LOGICA PARA Q MUESTRE EL WARNING HAY Q PROBARLA
-    //         if(!response.data.login) {
-    //             // const warning = document.getElementsByClassName(css.PWarning)[0];
+            // loginValue = JSON.parse(loginValue);
 
-    //             // console.log(warning);
+            // console.log(loginValue);
 
-    //             warning.style.display = 'block';
-    //         }
-    //         else {
 
-    //             warning.style.display= 'none';
-    //         }
+            this.props.userAndId(response.data.user, response.data._id);
 
-    //     })
-    //     .catch(err => console.log(err))
-    // }
+            this.props.logIn(JSON.parse(localStorage.getItem('notexLog')));
+
+            //ACA RESPONSE CON _id, user y login NO SE SI SIRVE PARA LO SIGUIENTE
+            // console.log(response.data);
+
+            if(!this.props.reduxLoggedIn){
+
+                this.state.warning.push(css.PWarningShow);
+            }
+        })
+        .catch(err => alert(err.message));
+    }
+
 
     render() {
 
-        let warning = [];
-
-        if(!this.state.loggedIn){
-
-            warning.push(css.PWarning);
-        }
-
-        // console.log(this.props);
+        // console.log(Api.USER);
+        
         return(
             <div>
                 <header className={css.Header}>
@@ -83,8 +87,7 @@ class Home extends Component {
                 <div className={css.DivForm}>
 
                     <form className={css.Form}
-                            // onSubmit={(e) => this.logInSubmit(e)}>
-                            onSubmit={this.props.onLogInSubmit}>
+                            onSubmit={(e) => this.logInSubmit(e)}>
                         <div className={css.DivH3}>
                             <h3>Welcome</h3>
                         </div>
@@ -94,20 +97,18 @@ class Home extends Component {
                             <p>User</p>
                             <input type="text" 
                                     name="user" 
-                                    // onChange={(e) => this.onInputChange(e)}
-                                    onChange={this.props.onInputChange}
-                                    // value={this.state.user}>           
-                                    value={this.props.userValue}>
+                                    onChange={(e) => this.onInputChange(e)}
+                                    value={this.state.user}>           
                             </input>
 
                             <p>Password</p>
                             <input type="password" 
                                     name="password"
-                                    onChange={this.props.onInputChange}
-                                    value={this.props.passwordValue}>
+                                    onChange={(e) => this.onInputChange(e)}
+                                    value={this.state.password}>
                             </input>
 
-                            <p className={warning.join(' ')}>Wrong User or Password</p>
+                            <p className={this.state.warning.join(' ')}>Wrong User or Password</p>
                         </div>
 
                         <div className={css.DivBtn}>
@@ -116,14 +117,41 @@ class Home extends Component {
                     </form>
                 </div>
 
-                <footer className={css.Footer}>
 
-                    <h3>NumaX &copy;2020</h3>
-
-                </footer>
+                <Footer/>
+                
             </div>
         )
     }
 }
 
-export default Home;
+// this reads from STORE
+const mapGlobalStateToProps = (globalState) => {
+    return {
+        reduxUser: globalState.user,
+        reduxUserId: globalState.userId,
+        reduxLoggedIn: globalState.loggedIn
+    }
+  }
+  
+  // this writes to STORE
+  const mapDispatchToProps = (dispatch) => {
+    return {
+        userAndId: (userProp, userIdProp) => {
+            dispatch({type: 'USER_AND_ID', userAction: userProp, userIdAction: userIdProp})        
+        },
+        // logIn: (loggedInProp) => {
+        //     dispatch({type: 'LOG_IN', loggedInAction: loggedInProp})
+        // },
+        logIn: (loggedInProp) => {
+            dispatch({type: 'LOG_IN', loggedInAction: loggedInProp})
+        },
+    //     logOut: (loggedInProp) => {
+    //       dispatch({type: 'LOG_OUT', loggedInAction: loggedInProp})
+    //   },
+        logOut: () => {
+            dispatch({type: 'LOG_OUT', loggedInAction: localStorage.setItem('notexLog', false)})
+        },
+    }
+  }
+  export default connect(mapGlobalStateToProps, mapDispatchToProps)(Home);
