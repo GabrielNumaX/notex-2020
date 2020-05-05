@@ -1,6 +1,11 @@
+// require('./passport/passport');
+
+require('./passport/passportAsync');
 const express = require('express');
 const cors = require('cors');
 const appEx = express();
+const passport = require('passport');
+
 
 appEx.set('port', process.env.PORT || 3030);
 
@@ -9,6 +14,8 @@ appEx.set('port', process.env.PORT || 3030);
 
 appEx.use(cors());
 appEx.use(express.json());
+appEx.use(passport.initialize());
+appEx.use(passport.session());
 
 
 //ROUTES

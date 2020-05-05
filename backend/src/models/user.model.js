@@ -2,7 +2,7 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
-const MAX_LOGIN_ATTEMPTS = 5;
+const MAX_LOGIN_ATTEMPTS = 100;
 const LOCK_TIME = 2 * 60 * 60 * 1000; 
 //two hours LOCK_TIME
 
@@ -63,6 +63,11 @@ userSchema.pre('save', function(next) {
 
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+
+        console.log('CANDIDATE', candidatePassword);
+        // console.log('THIS.PASS', this.password);
+        // console.log('THIS', this.global);
+        // console.log('PASSWORD',password)
         if(err) {
             return cb(err);
         }
@@ -104,7 +109,13 @@ const reasons = userSchema.statics.failedLogin = {
 
 userSchema.statics.getAuthenticated = function(username, password, cb) {
 
+    // console.log('MODEL USER', username);
+
+    // console.log('MODEL PASS', password);
+
     this.findOne({user: username}, function(err, user) {
+
+        // console.log('INSIDE SEARCH', user)
 
         if(err) {
             return cb(err);
@@ -129,12 +140,16 @@ userSchema.statics.getAuthenticated = function(username, password, cb) {
 
         // test for a matching password
         user.comparePassword(password, function(err, isMatch) {
+
+            console.log('COMPARE', password);
             if(err){
                 return cb(err);
             }
 
             // check if the password was a match
             if(isMatch) {
+
+                console.log('MATCH', isMatch);
                 // if there's no lock or failed attempts, just return the user
                 if(!user.loginAttempts && !user.lockUntil) {
                     return cb(null, user);

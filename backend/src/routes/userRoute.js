@@ -13,17 +13,23 @@ const {
     getUserNotes,
 } = require('../controllers/user.controller');
 
+router.post('/login', passport.authenticate('local', {
+
+        successRedirect: '/notes',
+        failureRedirect: '/', //URL's     
+    })
+);
 
 router.route('/')
     .get(getUsers)
     // .post(postUserValidate)
     // .post(postUser);
-    .post(passport.authenticate('local', {
+    // .post(passport.authenticate('local', {
 
-        successRedirect: '/notes',
-        failureRedirect: '/', //URL's
+    //     successRedirect: '/notes',
+    //     failureRedirect: '/', //URL's
         
-      }))
+    //   }))
 
 router.route('/create')
     .post(postUser);
