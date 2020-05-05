@@ -1,5 +1,6 @@
 const { Router} = require('express');
 const router = Router();
+const passport = require('passport');
 
 const {
     getUsers,
@@ -15,8 +16,14 @@ const {
 
 router.route('/')
     .get(getUsers)
-    .post(postUserValidate)
+    // .post(postUserValidate)
     // .post(postUser);
+    .post(passport.authenticate('local', {
+
+        successRedirect: '/notes',
+        failureRedirect: '/', //URL's
+        
+      }))
 
 router.route('/create')
     .post(postUser);
