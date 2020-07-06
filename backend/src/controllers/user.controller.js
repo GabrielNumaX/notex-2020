@@ -12,14 +12,14 @@ userController.getUsers = async (req, res) => {
 
 userController.postUserValidate = async (req, res) => {
         
-    const {user, password} = req.body;
+    const {email, password} = req.body;
 
     // const response = await userModel.find(req.body);
 
     // res.json(response);
 
     // attempt to authenticate user
-    await userModel.getAuthenticated(user, password, function(err, user, reason) {
+    await userModel.getAuthenticated(email, password, function(err, user, reason) {
         if(err) {
             throw err;
         }
@@ -27,43 +27,35 @@ userController.postUserValidate = async (req, res) => {
         // login was successful if we have a user
         if(user) {
 
-            const userData = userModel.findOne(user);
+            const token = user.generateAuthToken();
 
-            //it must be a better way to do this
-            res.json({
-                _id: userData._conditions._id,
-                user: userData._conditions.user,
-                login: true
-            });
-            // console.log(userData._conditions.user);
+            res.header('x-notex-token', token).send({login: true, _id: user._id});
 
             return;
         }
-
-        //THIS IS FROM THE MODEL METHODS
-        // const reasons = userSchema.statics.failedLogin = {
-        //     NOT_FOUND: 0,
-        //     PASSWORD_INCORRECT: 1,
-        //     MAX_ATTEMPTS: 2
-        // };
         
-
         // otherwise we can determine why we failed
         const reasons = userModel.failedLogin;
         //aca estaba es ERROR
         switch (reason) {
             case reasons.NOT_FOUND:
-                // res.json({login: 'Login Failed'});
-                res.json({login: false});
+                res.json({
+                    login: false,
+                    message: 'Invalid User or Password'
+                });
                 break;
             case reasons.PASSWORD_INCORRECT:
-                // res.json({login: 'Login Failed'});
-                res.json({login: false});
+                res.json({ 
+                    login: false, 
+                    message: 'Invalid User or Password',
+                    });
                 // console.log('wrong password');
                 break;
             case reasons.MAX_ATTEMPTS:
-                // res.json({login: 'Login Failed'});
-                res.json({login: false});
+                res.json({
+                    login: false,
+                    message: 'You have reached maximum attempts, your account is locked',
+                });
                 break;
         }
     });

@@ -1,9 +1,11 @@
 // const mongoose = require('mongoose');
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const MAX_LOGIN_ATTEMPTS = 5;
-const LOCK_TIME = 2 * 60 * 60 * 1000; 
+const LOCK_TIME = 2 * 60 * 60 * 1000; //dos horas-> 1seg x 60 x 60min x 2hs
 //two hours LOCK_TIME
 
 
@@ -16,7 +18,11 @@ const userSchema = new Schema({
     },
     password: {type: String,
                 required: true},
-    email: { type: String, required: true },
+    email: { 
+        type: String, 
+        required: true,
+        unique: true,
+    },
     loginAttempts: { type: Number, required: true, default: 0 },
     lockUntil: { type: Number },
     notes: [
@@ -102,9 +108,10 @@ const reasons = userSchema.statics.failedLogin = {
 };
 
 
-userSchema.statics.getAuthenticated = function(username, password, cb) {
+//se cambio user a email para q se logguee con el email
+userSchema.statics.getAuthenticated = function(email, password, cb) {
 
-    this.findOne({user: username}, function(err, user) {
+    this.findOne({email: email}, function(err, user) {
 
         if(err) {
             return cb(err);
@@ -167,5 +174,18 @@ userSchema.statics.getAuthenticated = function(username, password, cb) {
         });     
     });
 };
+
+
+
+//IMPORTANTE ESTO DEBE SER LLAMADO DE LA INSTANCIA DE user
+//NO DEL MODEL
+
+//esto es de 10.9 de mosh JWT
+userSchema.methods.generateAuthToken = function() {
+
+    const token = jwt.sign({_id: this._id}, process.env.JWT_KEY);
+
+    return token;
+  }
 
 module.exports = model('Users', userSchema);
