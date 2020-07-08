@@ -17,13 +17,13 @@ router.get('/', getNotes)
 //     .get(getNotes)
     // .post(postNote);
 
-    
+
 
 //validar el token de user para acceder a las notas por :id
 router.get('/:id', jwtAuth, getNote);
 router.put('/:id', jwtAuth, putNote);
 
-router.post('/', postNote);
+router.post('/', jwtAuth, postNote);
 
 // router.route('/:id')
 //     .get(getNote)

@@ -98,19 +98,22 @@ notesController.getNote = async (req, res) => {
 notesController.postNote = async (req, res) => {
 
     // const {note, author, date} = req.body;
+    // const author = req.params._id
 
     const {note, author} = req.body;
      
     const newNote = new notesModel({
-        note, 
+        note,
         author,
     });
 
     await newNote.save();
 
-    res.json({
-        note: 'Note created'
-    });
+    // res.json({
+    //     note: 'Note created'
+    // });
+
+    res.json(newNote)
 };
 
 notesController.putNote = async (req, res) => {

@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const { Schema, model } = require('mongoose');
+const userModel = require('./user.model');
 
 const notesSchema = new Schema({
     note: {type: String, trim: true},
     // author: {type: String, required: true},
     author: { 
-      type: Schema.Types.ObjectId, 
-      ref: 'Users' 
+      type: Schema.Types.ObjectId,
+      ref: 'Users'
     },
     date: {
         type: Date,
