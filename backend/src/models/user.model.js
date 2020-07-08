@@ -28,7 +28,6 @@ const userSchema = new Schema({
     notes: [
         { type: Schema.Types.ObjectId, ref: 'Notes' }
       ],
-    
 
 }, {timestamps: true});
 
@@ -178,7 +177,7 @@ userSchema.statics.getAuthenticated = function(email, password, cb) {
 
 
 //IMPORTANTE ESTO DEBE SER LLAMADO DE LA INSTANCIA DE user
-//NO DEL MODEL
+//NO DEL UserModel
 
 //esto es de 10.9 de mosh JWT
 userSchema.methods.generateAuthToken = function() {

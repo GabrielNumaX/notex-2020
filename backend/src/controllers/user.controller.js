@@ -61,9 +61,9 @@ userController.postUserValidate = async (req, res) => {
     });
 };
 
-userController.getUser = async (req, res) => {
+userController.getUser =  async (req, res) => {
 
-    const id = req.params.id;
+    const id = req.user._id;
 
     const user = await userModel
                             .findById(id)
@@ -90,26 +90,37 @@ userController.postUser = async (req, res) => {
     });
 };
 
-userController.putUser = async (req, res) => {
+userController.putUser =  async (req, res) => {
 
-    const id = req.params.id;
+    const id = req.user._id;
 
     const {user, email} = req.body;
-    
-    await userModel.findByIdAndUpdate({_id: id}, {
-        user,
-        email
-    });
 
-    res.json({
-        user,
-        email
-    });
+    if(!user){
+    
+        const updatedUser = await userModel.findByIdAndUpdate({_id: id}, {
+            email
+        }, {new: true});
+
+        res.json({
+            email: updatedUser.email
+        });
+    }
+    else if(!email){
+    
+        const updatedUser = await userModel.findByIdAndUpdate({_id: id}, {
+            user
+        }, {new: true});
+
+        res.json({
+            user: updatedUser.user
+        });
+    }
 };
 
 userController.deleteUser = async (req, res) => {
 
-    const id = req.params.id;
+    const id = req.user._id;
 
     await userModel.findByIdAndDelete(id);
 
@@ -123,9 +134,12 @@ userController.deleteUser = async (req, res) => {
 
 userController.postUserNote = async (req, res) => {
 
-    const id = req.params.id;
+    const id = req.user._id;
+
+    // console.log(req.body.note);
 
     //creates new note
+    //esto crea new notesModel({note: req.body.note})
     const newNote = new notesModel(req.body);
     //get user
     const user = await userModel.findById(id);
@@ -138,13 +152,13 @@ userController.postUserNote = async (req, res) => {
     //save user
     await user.save();
 
-    res.json(newNote);
+    res.json({note: newNote.note, date: newNote.date});
     // res.send('post user note');
 }
 
 userController.getUserNotes = async (req, res) => {
 
-    const id = req.params.id;
+    const id = req.user._id;
 
     const user = await userModel.findById(id)
                                 .populate('notes')
@@ -153,32 +167,5 @@ userController.getUserNotes = async (req, res) => {
     res.json(user.notes);
 
 }
-
-// const addTutorialToCategory = function(tutorialId, categoryId) {
-//     return db.Tutorial.findByIdAndUpdate(
-//       tutorialId,
-//       { category: categoryId },
-//       { new: true, useFindAndModify: false }
-//     );
-//   };
-
-
-// userController.addNoteToUser = async (req, res) => {
-
-//     // const userId = req.params.id;
-
-//     // // creates new note
-//     // const noteToSave = new notesModel(req.body);
-
-//     // await noteToSave.save();
-
-//     // const noteId = noteToSave._id;
-
-//     // const newNote = await notesModel.findByIdAndUpdate(noteId, {author: userId}, {new: true});
-
-//     // res.json(newNote);
-
-//     res.json({note: 'add note to user'});
-// }
 
 module.exports = userController;

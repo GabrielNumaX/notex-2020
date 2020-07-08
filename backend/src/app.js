@@ -12,7 +12,7 @@ appEx.use(express.json());
 
 
 //ROUTES
-appEx.use('/api/user', require('./routes/userRoute'));
-appEx.use('/api/notes', require('./routes/notesRoute'));
+appEx.use('/api/user', require('./routes/user.route'));
+appEx.use('/api/notes', require('./routes/notes.route'));
 
 module.exports = appEx;
