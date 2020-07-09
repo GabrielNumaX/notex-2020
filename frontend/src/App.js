@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect} from 'react';
 // import axios from 'axios';
 import {BrowserRouter, Switch ,Route} from 'react-router-dom';
 
@@ -11,20 +11,26 @@ import Home from './Component/Home/Home';
 import CreateNote from './Component/CreateNote/CreateNote';
 import ShowNotes from './Component/ShowNotes/ShowNotes';
 
-class App extends Component {
+const App = (props) => {
 
-  // constructor(props) {
-  //   super(props);
+  // const [logged, isLogged] = useState(false);
 
-  //   this.state = {
-  //     user: '',
-  //     password: '',
+  // useEffect(() => {
+
+  //   if(getToken()){
+
+  //     isLogged(true);
   //   }
-  // }
+  //   else {
+  //     isLogged(false);
+  //   }
+  // }, [])
 
-  render() {
+  
+  // console.log(logged);
+  // console.log('app.js')
 
-    // console.log(this.state)
+
     return (
 
       <BrowserRouter>
@@ -48,17 +54,23 @@ class App extends Component {
                                                   <Redirect to={'/'}/>
                                                   }/> */}
 
-          <Route path="/" exact render={(routeProps) => this.props.reduxLoggedIn ?
+          <Route path="/" exact render={ () => props.reduxLoggedIn ?
+                                                    <ShowNotes/>
+                                                    :
+                                                    <Home/>
+                                                    }/>
+
+          {/* <Route path="/" exact render={(routeProps) => this.props.reduxLoggedIn ?
                                                   <ShowNotes {...routeProps}/>
                                                   :
                                                   <Home/>
-                                                  }/>
+                                                  }/> */}
 
-          <Route path="/notes" render={(routeProps) => this.props.reduxLoggedIn ?
+          {/* <Route path="/notes" render={(routeProps) => this.props.reduxLoggedIn ?
                                                     <CreateNote {...routeProps}/>
                                                   :
                                                   <Home/>}
-                                                  />
+                                                  /> */}
 
           {/* <Route path="" render={(routeProps) => this.state.loggedin ? 
 					<Component {...routeProps}/> 
@@ -79,14 +91,13 @@ class App extends Component {
       
     );
   }
-}
 
 // this reads from STORE
 const mapGlobalStateToProps = (globalState) => {
   return {
       reduxUser: globalState.user,
       reduxUserId: globalState.userId,
-      reduxLoggedIn: globalState.loggedIn
+      reduxLoggedIn: globalState.login
   }
 }
 

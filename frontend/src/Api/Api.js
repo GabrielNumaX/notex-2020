@@ -8,17 +8,20 @@
 const PORT = process.env.PORT || 3030;
 
 export const ApiRoutes = {
-    GET_NOTES: `http://localhost:${PORT}/api/notes`,
+    GET_POST_NOTES: `http://localhost:${PORT}/api/notes`,
 
-    NOTE_ID: `http://localhost:${PORT}/api/notes/`, //:id
+    GET_PUT_DEL_NOTE: `http://localhost:${PORT}/api/notes/`, //:id de note
 
-    USER: `http://localhost:${PORT}/api/user`,
+    USER_PUT_DEL: `http://localhost:${PORT}/api/user`,
 
-    USER_CREATE: `http://localhost:${PORT}/api/user/create`,
+    USER_CREATE: `http://localhost:${PORT}/api/user/signup`,
+
+    USER_LOGIN: `http://localhost:${PORT}/api/user/login`,
+
+    USER_CHANGE_PASS: `http://localhost:${PORT}/api/user/password`,
 
     USER_ID: `http://localhost:${PORT}/api/user/`, //:id
-
-    GET_POST_NOTE: `http://localhost:${PORT}/api/user/note/`, //:id de user o de note
+  
 }
 
 // /api/notes

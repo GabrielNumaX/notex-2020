@@ -16,6 +16,8 @@ import Loader from '../Loader/Loader';
 
 import { ApiRoutes as Api } from '../../Api/Api';
 
+import {axiosHeader} from '../../Auth/tokenHandler'
+
 
 
 class ShowNotes extends Component {
@@ -37,6 +39,8 @@ class ShowNotes extends Component {
         //this prints REACT PORT -> :3000
         // console.log(Api.GET_POST_NOTE+this.props.reduxUserId);
 
+        console.log('show notes didmount')
+
         this.getNotes();
     }
 
@@ -52,8 +56,7 @@ class ShowNotes extends Component {
 
     getNotes = () => {
 
-        // axios.get(`http://localhost:3030/api/user/note/${this.props.reduxUserId}`)
-        axios.get(Api.GET_POST_NOTE+this.props.reduxUserId)
+        axios.get(Api.GET_POST_NOTES)
             .then(resp => {
                 // console.log(resp.data);
                 this.setState({

@@ -7,7 +7,10 @@ const appEx = express();
 appEx.set('port', process.env.PORT || 3030);
 
 //MIDDLEWARE
-appEx.use(cors());
+appEx.use(cors({
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['x-notex-token']
+}));
 appEx.use(express.json());
 
 //ROUTES

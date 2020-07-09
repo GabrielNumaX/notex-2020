@@ -9,13 +9,16 @@ import Footer from '../Footer/Footer';
 
 import { ApiRoutes as Api } from '../../Api/Api';
 
+import {setToken, axiosHeader} from '../../Auth/tokenHandler';
+// import { getNodeText } from '@testing-library/react';
+
 class Home extends Component {
 
     constructor(props){
         super(props);
 
         this.state = {
-            user: '',
+            email: '',
             password: '',
             warning: [css.PWarning],
         }
@@ -30,53 +33,31 @@ class Home extends Component {
     logInSubmit = (e) => {
         e.preventDefault();
 
-        // axios.post('http://localhost:3030/api/user', {
-        axios.post(Api.USER, {
-            user: this.state.user,
+        axios.post(Api.USER_LOGIN, {
+            email: this.state.email,
             password: this.state.password
         })
-        .then(response => {
+        .then(res => {
+
+            console.log(res);
+
+            setToken(res.headers['x-notex-token']);
+
+            axiosHeader();
+
+            this.props.isLogged(true)
+
             this.setState({
-                user: '',
+                email: '',
                 password: '',  
             });
 
-            localStorage.setItem('notexLog', response.data.login);
-
-            const userData = {
-                user: response.data.user,
-                userId: response.data._id,
-            }
-
-            localStorage.setItem('notexUserData', JSON.stringify(userData));
-
-            // let loginValue = localStorage.getItem('notexLog');
-
-
-            // loginValue = JSON.parse(loginValue);
-
-            // console.log(loginValue);
-
-
-            this.props.userAndId(response.data.user, response.data._id);
-
-            this.props.logIn(JSON.parse(localStorage.getItem('notexLog')));
-
-            //ACA RESPONSE CON _id, user y login NO SE SI SIRVE PARA LO SIGUIENTE
-            // console.log(response.data);
-
-            if(!this.props.reduxLoggedIn){
-
-                this.state.warning.push(css.PWarningShow);
-            }
         })
-        .catch(err => alert(err.message));
+        .catch(err => console.log(err));
     }
 
 
     render() {
-
-        // console.log(Api.USER);
         
         return(
             <div>
@@ -94,11 +75,11 @@ class Home extends Component {
                         
                         <div className={css.DivInputs}>
 
-                            <p>User</p>
-                            <input type="text" 
-                                    name="user" 
+                            <p>Email</p>
+                            <input type="email" 
+                                    name="email" 
                                     onChange={(e) => this.onInputChange(e)}
-                                    value={this.state.user}>           
+                                    value={this.state.email}>           
                             </input>
 
                             <p>Password</p>
@@ -108,7 +89,7 @@ class Home extends Component {
                                     value={this.state.password}>
                             </input>
 
-                            <p className={this.state.warning.join(' ')}>Wrong User or Password</p>
+                            <p className={this.state.warning.join(' ')}>Wrong Email or Password</p>
                         </div>
 
                         <div className={css.DivBtn}>
@@ -130,7 +111,7 @@ const mapGlobalStateToProps = (globalState) => {
     return {
         reduxUser: globalState.user,
         reduxUserId: globalState.userId,
-        reduxLoggedIn: globalState.loggedIn
+        reduxLoggedIn: globalState.login
     }
   }
   
@@ -143,8 +124,8 @@ const mapGlobalStateToProps = (globalState) => {
         // logIn: (loggedInProp) => {
         //     dispatch({type: 'LOG_IN', loggedInAction: loggedInProp})
         // },
-        logIn: (loggedInProp) => {
-            dispatch({type: 'LOG_IN', loggedInAction: loggedInProp})
+        isLogged: (isLogged) => {
+            dispatch({type: 'LOG_IN_OUT', loggedInAction: isLogged})
         },
     //     logOut: (loggedInProp) => {
     //       dispatch({type: 'LOG_OUT', loggedInAction: loggedInProp})
