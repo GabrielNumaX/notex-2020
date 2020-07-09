@@ -24,5 +24,4 @@ function jwtAuth(req, res, next) {
   } 
 }
 
-
 module.exports = jwtAuth;

@@ -9,25 +9,16 @@ const {
     deleteNote
 } = require('../controllers/notes.controller');
 
-const jwtAuth = require('../jwt/jwtAuth');
+const jwtAuth = require('../middleware/jwtAuth');
 
 
-router.get('/', getNotes)
-// router.route('/')
-//     .get(getNotes)
-    // .post(postNote);
-
-
+router.get('/', jwtAuth, getNotes);
+router.post('/', jwtAuth, postNote);
 
 //validar el token de user para acceder a las notas por :id
 router.get('/:id', jwtAuth, getNote);
 router.put('/:id', jwtAuth, putNote);
+router.delete('/:id', jwtAuth, deleteNote);
 
-router.post('/', jwtAuth, postNote);
-
-// router.route('/:id')
-//     .get(getNote)
-//     .put(putNote)
-//     .delete(deleteNote);
 
 module.exports = router;

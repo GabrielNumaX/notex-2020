@@ -1,14 +1,18 @@
 const userModel = require('../models/user.model');
 const notesModel = require('../models/notes.model');
 
+//this is to PUT user password
+const bcrypt = require('bcrypt');
+const SALT_WORK_FACTOR = 10;
+
 const userController = {};
 
-userController.getUsers = async (req, res) => {
+// userController.getUsers = async (req, res) => {
 
-    const users = await userModel.find();
+//     const users = await userModel.find();
 
-    res.json(users)
-}
+//     res.json(users)
+// }
 
 userController.postUserValidate = async (req, res) => {
         
@@ -61,22 +65,34 @@ userController.postUserValidate = async (req, res) => {
     });
 };
 
-userController.getUser =  async (req, res) => {
+// userController.getUser =  async (req, res) => {
 
-    const id = req.user._id;
+//     const id = req.user._id;
 
-    const user = await userModel
-                            .findById(id)
-                            .populate('notes');
+//     const user = await userModel
+//                             .findById(id)
+//                             .populate('notes');
 
-    res.json(user);
-}
+//     res.json(user);
+// }
 
 
 userController.postUser = async (req, res) => {
 
     const {user, email, password} = req.body;
-     
+
+    const userCheck = await userModel.findOne({user: user});
+
+    if(userCheck) {
+        return res.send('User NOT available');
+    }
+    
+    const emailCheck = await userModel.findOne({email: email})
+
+    if(emailCheck) {
+        return res.send('Email Already Registered');
+    }
+
     const newUser = new userModel ({
         user,
         email,
@@ -90,13 +106,34 @@ userController.postUser = async (req, res) => {
     });
 };
 
+
+
 userController.putUser =  async (req, res) => {
 
     const id = req.user._id;
 
     const {user, email} = req.body;
 
-    if(!user){
+    const userCheck = await userModel.findOne({user: user});
+
+    if(userCheck) {
+
+        return res.send('User NOT Available');
+
+    }
+
+    const mailCheck = await userModel.findOne({email: email});
+
+    if(mailCheck) {
+
+        return res.send('Email NOT Available');
+    }
+
+    if(!user && !email) {
+        return res.send('No Empty Changes');
+    }
+
+    if(!user && email){
     
         const updatedUser = await userModel.findByIdAndUpdate({_id: id}, {
             email
@@ -106,7 +143,7 @@ userController.putUser =  async (req, res) => {
             email: updatedUser.email
         });
     }
-    else if(!email){
+    else if(!email && user){
     
         const updatedUser = await userModel.findByIdAndUpdate({_id: id}, {
             user
@@ -115,6 +152,18 @@ userController.putUser =  async (req, res) => {
         res.json({
             user: updatedUser.user
         });
+    }
+    else {
+        
+        const updatedUser = await userModel.findByIdAndUpdate({_id: id}, {
+            user,
+            email
+        }, {new: true});
+
+        res.json({
+            user: updatedUser.user,
+            email: updatedUser.email
+        })
     }
 };
 
@@ -130,42 +179,63 @@ userController.deleteUser = async (req, res) => {
 
 };
 
-//this gives and EMBEDED REFERENCE ON USERS
-
-userController.postUserNote = async (req, res) => {
+userController.changePassword = async (req, res) => {
 
     const id = req.user._id;
+    let { password } = req.body;
 
-    // console.log(req.body.note);
+    if(!password) {
+        return res.send('Enter Password');
+    }
 
-    //creates new note
-    //esto crea new notesModel({note: req.body.note})
-    const newNote = new notesModel(req.body);
-    //get user
-    const user = await userModel.findById(id);
-    //asign reference relationship
-    newNote.author = user;
-    //save note
-    await newNote.save();
-    //add note to user
-    user.notes.push(newNote._id);
-    //save user
-    await user.save();
+    const salt = await bcrypt.genSalt(SALT_WORK_FACTOR)
 
-    res.json({note: newNote.note, date: newNote.date});
-    // res.send('post user note');
+    password = await bcrypt.hash(password, salt)
+
+    await userModel.findByIdAndUpdate({_id: id}, {
+        password: password
+    });
+
+    res.send('Password Successfully Changed');
+
 }
 
-userController.getUserNotes = async (req, res) => {
+// //this gives and EMBEDED REFERENCE ON USERS
 
-    const id = req.user._id;
+// userController.postUserNote = async (req, res) => {
 
-    const user = await userModel.findById(id)
-                                .populate('notes')
+//     const id = req.user._id;
+
+//     // console.log(req.body.note);
+
+//     //creates new note
+//     //esto crea new notesModel({note: req.body.note})
+//     const newNote = new notesModel(req.body);
+//     //get user
+//     const user = await userModel.findById(id);
+//     //asign reference relationship
+//     newNote.author = user;
+//     //save note
+//     await newNote.save();
+//     //add note to user
+//     user.notes.push(newNote._id);
+//     //save user
+//     await user.save();
+
+//     res.json({note: newNote.note, date: newNote.date});
+//     // res.send('post user note');
+// }
+
+// userController.getUserNotes = async (req, res) => {
+
+//     const id = req.user._id;
+
+//     const user = await userModel.findById(id)
+//                                 .populate('notes')
                                 
 
-    res.json(user.notes);
+//     res.json(user.notes);
 
-}
+// }
 
 module.exports = userController;

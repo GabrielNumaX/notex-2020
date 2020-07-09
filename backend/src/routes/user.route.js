@@ -1,48 +1,35 @@
 const { Router} = require('express');
 const router = Router();
-const jwtAuth = require('../jwt/jwtAuth');
+const jwtAuth = require('../middleware/jwtAuth');
 
 const {
-    getUsers,
-    getUser, 
+    // getUsers,
+    // getUser, 
     postUser, 
     postUserValidate, 
     putUser, 
     deleteUser,
-    postUserNote,
-    getUserNotes,
+    // postUserNote,
+    // getUserNotes,
+    changePassword,
 } = require('../controllers/user.controller');
 
-router.get('/', jwtAuth, getUsers);
+// router.get('/', jwtAuth, getUsers);
 
-router.post('/signin', postUserValidate)
-    // .get(getUsers)
-    // .post(postUserValidate)
-    // .post(postUser);
+router.post('/login', postUserValidate);
 
-router.post('/signup', postUser)
-    // .post(postUser);
+router.post('/signup', postUser);
 
+router.put('/password', jwtAuth, changePassword);
 
 //IMPORTANTE
 //con el token NO es necesario para el :id por url
-
-// router.route('/:id')
-//     .get(getUser)
-//     .put(putUser)
-//     .delete(deleteUser);
-
-router.get('/', jwtAuth, getUser);
+// router.get('/', jwtAuth, getUser);
 router.put('/', jwtAuth, putUser);
 router.delete('/', jwtAuth, deleteUser);
 
 
-router.post('/note', jwtAuth, postUserNote);
-router.get('/note', jwtAuth, getUserNotes);
-
-// router.route('/note/:id')
-//     .post(postUserNote)
-//     .get(getUserNotes);
-
+// router.post('/note', jwtAuth, postUserNote);
+// router.get('/note', jwtAuth, getUserNotes);
 
 module.exports = router;

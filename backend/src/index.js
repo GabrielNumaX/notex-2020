@@ -1,7 +1,6 @@
 const app = require('./app');
 require('./database');
 
-
 // set('port', process.env.PORT || 3000);
 
 app.listen(app.set('port'));
