@@ -3,8 +3,9 @@ const router = Router();
 const jwtAuth = require('../middleware/jwtAuth');
 
 const {
-    // getUsers,
-    // getUser, 
+    getUsers,
+    // getUser,
+    checkUser, 
     postUser, 
     postUserValidate, 
     putUser, 
@@ -14,7 +15,9 @@ const {
     changePassword,
 } = require('../controllers/user.controller');
 
-// router.get('/', jwtAuth, getUsers);
+router.get('/', getUsers);
+
+router.post('/', checkUser);
 
 router.post('/login', postUserValidate);
 

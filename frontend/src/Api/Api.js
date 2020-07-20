@@ -21,6 +21,8 @@ export const ApiRoutes = {
     USER_CHANGE_PASS: `http://localhost:${PORT}/api/user/password`,
 
     USER_ID: `http://localhost:${PORT}/api/user/`, //:id
+
+    USER_CHECK: `http://localhost:${PORT}/api/user/`
   
 }
 

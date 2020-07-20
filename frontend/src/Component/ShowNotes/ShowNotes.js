@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import {Redirect} from 'react-router-dom';
+import {getToken} from '../../Auth/tokenHandler';
 import { format } from 'timeago.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -18,9 +20,13 @@ import { ApiRoutes as Api } from '../../Api/Api';
 
 import {axiosHeader} from '../../Auth/tokenHandler'
 
+// const CancelToken = axios.CancelToken;
+// const source = CancelToken.source();
 
 
 class ShowNotes extends Component {
+
+    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -34,45 +40,61 @@ class ShowNotes extends Component {
         }
     }
 
-    // aca pasar el ID de USER desde REDUX
     componentDidMount() {
-        //this prints REACT PORT -> :3000
-        // console.log(Api.GET_POST_NOTE+this.props.reduxUserId);
 
-        console.log('show notes didmount')
+        this._isMounted = true;
+
+        this.props.isLogged(getToken()) 
+    
+        // console.log('didmount');
 
         this.getNotes();
+        
     }
 
     componentDidUpdate(prevProps, prevState) {
 
         if(prevState.showModal !== this.state.showModal){
 
-            console.log('didUpdate');
+            // console.log('didUpdate');
 
             this.getNotes();
         }
     }
 
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     getNotes = () => {
+
+        axiosHeader();
+       
 
         axios.get(Api.GET_POST_NOTES)
             .then(resp => {
-                // console.log(resp.data);
-                this.setState({
-                    notes: resp.data,
-                    showLoader: false
-                })
+
+                if(this._isMounted){
 
                 // console.log(resp.data);
+
+                    this.setState({
+                        notes: [...resp.data.notes],
+                        showLoader: false
+                    })
+                }
+
             })
-            .catch(err => alert(err.message));
+            .catch(err => {
+                alert('Something Happend please reload');   
+              });
     }
 
     onDeleteNote = (id) => {
 
         // axios.delete(`http://localhost:3000/api/notes/${id}`)
-        axios.delete(Api.NOTE_ID+id)
+        axios.delete(Api.GET_PUT_DEL_NOTE+id)
         .then(response => {
             alert('note deleted');
 
@@ -113,6 +135,13 @@ class ShowNotes extends Component {
 
     render() {
 
+        // console.log(this.props.reduxLoggedIn);
+
+        if(!this.props.reduxLoggedIn) {
+
+            return <Redirect to='/'></Redirect>
+        }
+
         //this prints in reverse order
         const notes = this.state.notes.slice(0).reverse().map(item => {
 
@@ -123,9 +152,15 @@ class ShowNotes extends Component {
                         <h4>{this.props.reduxUser}</h4>
                         <p>{format(item.date)}</p>
                     </div>
-                        {/* este data esta para comparar y sacar el height */}
-                    <p className={css.PNote} data-id={item._id}>{item.note}</p>
 
+                    {/* <div className={css.DivNote}>
+
+                           
+                    </div> */}
+
+                     {/* este data esta para comparar y sacar el height */}
+                     <p className={css.PNote} data-id={item._id}>{item.note}</p>
+                       
                     <div className={css.DivBtns}>
                         <button type="button"
                             data-id={item._id}
@@ -149,18 +184,28 @@ class ShowNotes extends Component {
 
                 <Loader visible={this.state.showLoader}>
 
-                    <div className={css.ShowContainer}>
+                    <div>
 
-                        <Header>
+                        <div className={css.ShowContainer}>
 
-                        </Header>           
-                                    
-                        {notes}
+                            <Header>
 
-                        <EditModal showModal={this.state.showModal} 
-                                    closeModal={this.closeModal}
-                                    noteId={this.state.noteId}
-                                    noteHeight={this.state.noteHeight}/>
+                            </Header>           
+                                        
+                            {notes}
+
+                            {
+                            this.state.showModal ?
+
+                                <EditModal showModal={this.state.showModal} 
+                                            closeModal={this.closeModal}
+                                            noteId={this.state.noteId}
+                                            noteHeight={this.state.noteHeight}/>
+                            :
+                            null
+                            }
+
+                        </div>
 
                         <Footer/>
 
@@ -168,7 +213,6 @@ class ShowNotes extends Component {
                 
                 </Loader>
 
-            // {/* </div> */}
         )
     }
 }
@@ -177,23 +221,23 @@ class ShowNotes extends Component {
 const mapGlobalStateToProps = (globalState) => {
     return {
         reduxUser: globalState.user,
-        reduxUserId: globalState.userId,
-        reduxLoggedIn: globalState.loggedIn
+        reduxLoggedIn: globalState.login
     }
   }
   
   // this writes to STORE
   const mapDispatchToProps = (dispatch) => {
     return {
-        userAndId: (userProp, userIdProp) => {
-            dispatch({type: 'USER_AND_ID', userAction: userProp, userIdAction: userIdProp})        
+        userName: (userProp) => {
+            dispatch({type: 'USER_AND_ID', userAction: userProp})        
         },
-        logIn: (loggedInProp) => {
-            dispatch({type: 'LOG_IN', loggedInAction: loggedInProp})
+        isLogged: (loggedProp) => {
+            dispatch({type: 'LOG_IN', loggedInAction: loggedProp})
         },
-        logOut: (loggedInProp) => {
-          dispatch({type: 'LOG_OUT', loggedInAction: loggedInProp})
-      },
+        // esta no se si la voy a usar
+        logOut: () => {
+            dispatch({type: 'LOG_OUT', loggedInAction: localStorage.setItem('notexLog', false)})
+        },
     }
   }
   export default connect(mapGlobalStateToProps, mapDispatchToProps)(ShowNotes);

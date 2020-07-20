@@ -11,6 +11,8 @@ import { faPencilAlt, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { ApiRoutes as Api } from '../../Api/Api';
 
+import { axiosHeader } from '../../Auth/tokenHandler';
+
 import css from './EditModal.module.css';
 
 class EditModal extends Component {
@@ -20,34 +22,60 @@ class EditModal extends Component {
 
         this.state = {
             note: '',
+            edit: true,
         }
     }
 
-//    const user = useSelector(redux => redux.user);
+    componentDidMount() {
 
-//     if(!props.showModal){
-//         return null
-//     }
- 
+        // console.log('didMount');
 
-    componentDidUpdate(prevProps, prevState) {
+        axiosHeader();
 
-        if(prevProps.noteId !== this.props.noteId){
-
-            // axios.get(`http://localhost:3000/api/notes/${this.props.noteId}`)
-            axios.get(Api.NOTE_ID+this.props.noteId)
+            axios.get(Api.GET_PUT_DEL_NOTE+this.props.noteId)
             .then(response => {
                 // console.log(response.data);
 
                 this.setState({
                     note: response.data.note,
                 })
+
+                this.setState(prevState => ({
+                    edit: !prevState.edit
+                }));
             })
             .catch(err => {
                 alert(err.message);
             })
-        }
+        
     }
+
+    // componentDidUpdate(prevProps, prevState) {
+
+    //     console.log('didUpdate')
+
+    //     // if(prevProps.noteId !== this.props.noteId){
+    //     if(prevState.edit !== this.state.edit) {
+
+    //         axiosHeader();
+
+    //         axios.get(Api.GET_PUT_DEL_NOTE+this.props.noteId)
+    //         .then(response => {
+    //             // console.log(response.data);
+
+    //             this.setState({
+    //                 note: response.data.note,
+    //             })
+
+    //             this.setState(prevState => ({
+    //                 edit: !prevState.edit
+    //             }));
+    //         })
+    //         .catch(err => {
+    //             alert(err.message);
+    //         })
+    //     }
+    // }
 
     onNoteChange = (e) => {
         this.setState({
@@ -57,11 +85,13 @@ class EditModal extends Component {
 
     onNoteSubmit = () => {
 
-        // axios.put(`http://localhost:3000/api/notes/${this.props.noteId}`, {
-        axios.put(Api.NOTE_ID+this.props.noteId, {
+        axiosHeader();
+
+        axios.put(Api.GET_PUT_DEL_NOTE+this.props.noteId, {
             note: this.state.note,
         })
         .then(response => {
+
             this.setState({
                 note: '',
             });
@@ -80,14 +110,6 @@ class EditModal extends Component {
 
 
     render() {
-
-        if(!this.props.showModal){
-            return null
-        }
-
-        // console.log('modal props');
-        // console.log(this.props);
-        console.log(this.props.noteHeight);
 
         return(
             // <!-- The Modal -->

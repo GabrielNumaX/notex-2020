@@ -15,9 +15,9 @@ const globalStore = createStore(MainReducer,
                     window.__REDUX_DEVTOOLS_EXTENSION__());
 
 
-globalStore.subscribe(() => {
-    // console.log(globalStore.getState());
- })
+// globalStore.subscribe(() => {
+//     console.log(globalStore.getState());
+//  })
 
 ReactDOM.render(<Provider store={globalStore}><App /></Provider>, 
                 document.getElementById('root'));

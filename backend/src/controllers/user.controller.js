@@ -7,12 +7,47 @@ const SALT_WORK_FACTOR = 10;
 
 const userController = {};
 
-// userController.getUsers = async (req, res) => {
+userController.getUsers = async (req, res) => {
 
-//     const users = await userModel.find();
+    const users = await userModel.find();
 
-//     res.json(users)
-// }
+    res.json(users)
+}
+
+userController.checkUser = async (req, res) => {
+ 
+    let user = {};
+    let email = {};
+
+    if(req.body.user) {
+        
+        user = req.body.user;
+
+        const check = await userModel.findOne({user: user});
+
+        if(check) {
+
+            return res.json({message: false})
+        }
+
+        return res.json({message: true});
+    }
+
+    else if(req.body.email) {
+
+        email = req.body.email;
+
+        const check = await userModel.findOne({email: email});
+
+        if(check) {
+
+            return res.json({message: false})
+        }
+
+        return res.json({message: true});
+    }
+ 
+}
 
 userController.postUserValidate = async (req, res) => {
         
@@ -33,7 +68,11 @@ userController.postUserValidate = async (req, res) => {
 
             const token = user.generateAuthToken();
 
-            res.header('x-notex-token', token).send({login: true, _id: user._id});
+            res.header('x-notex-token', token).send({
+                login: true,
+                _id: user._id,
+                user: user.user
+            });
 
             return;
         }

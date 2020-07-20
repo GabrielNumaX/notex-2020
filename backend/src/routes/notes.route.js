@@ -13,6 +13,7 @@ const jwtAuth = require('../middleware/jwtAuth');
 
 
 router.get('/', jwtAuth, getNotes);
+// router.get('/', getNotes);
 router.post('/', jwtAuth, postNote);
 
 //validar el token de user para acceder a las notas por :id

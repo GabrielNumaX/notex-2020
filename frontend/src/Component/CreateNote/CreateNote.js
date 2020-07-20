@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
+import {axiosHeader} from '../../Auth/tokenHandler';
+import {Redirect} from 'react-router-dom';
+import {getToken} from '../../Auth/tokenHandler';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -22,6 +25,12 @@ class CreateNote extends Component {
         }
     }
 
+    componentDidMount() {
+
+        this.props.isLogged(getToken())
+
+    }
+
     onNoteChange = (e) => {
         this.setState({
             note: e.target.value
@@ -30,8 +39,9 @@ class CreateNote extends Component {
 
     onNoteSubmit = () => {
 
-        // axios.post(`http://localhost:3000/api/user/${this.props.reduxUserId}/notes`, {
-        axios.post(Api.GET_POST_NOTE+this.props.reduxUserId, {
+        axiosHeader();
+
+        axios.post(Api.GET_POST_NOTES, {
             note: this.state.note,
         })
         .then(response => {
@@ -41,7 +51,7 @@ class CreateNote extends Component {
 
             alert('Note Created');
 
-            this.props.history.push('/');
+            this.props.history.push('/notes');
         })
         .catch(err => {
             alert(err.message);
@@ -51,6 +61,13 @@ class CreateNote extends Component {
     }
 
     render() {
+
+        // console.log(this.props.reduxLoggedIn);
+
+        if(!this.props.reduxLoggedIn) {
+
+            return <Redirect to='/'></Redirect>
+        }
 
         return(
             <div className={css.CreateContainer}>
@@ -75,6 +92,12 @@ class CreateNote extends Component {
                             Create
                         </button>
 
+                        <button 
+                            onClick={() => this.setState({note: ''})}>
+                                <FontAwesomeIcon icon={faTimesCircle} className={css.I}/>
+                                Cancel
+                            </button>
+
                     </div>
   
                 </div>
@@ -90,9 +113,24 @@ class CreateNote extends Component {
 const mapGlobalStateToProps = (globalState) => {
     return {
         reduxUser: globalState.user,
-        reduxUserId: globalState.userId,
-        reduxLoggedIn: globalState.loggedIn
+        reduxLoggedIn: globalState.login
     }
   }
 
-  export default connect(mapGlobalStateToProps, null)(CreateNote);
+   // this writes to STORE
+  const mapDispatchToProps = (dispatch) => {
+    return {
+        userName: (userProp) => {
+            dispatch({type: 'USER_AND_ID', userAction: userProp})        
+        },
+        isLogged: (loggedProp) => {
+            dispatch({type: 'LOG_IN', loggedInAction: loggedProp})
+        },
+        // esta no se si la voy a usar
+        logOut: () => {
+            dispatch({type: 'LOG_OUT', loggedInAction: localStorage.setItem('notexLog', false)})
+        },
+    }
+  }
+
+  export default connect(mapGlobalStateToProps, mapDispatchToProps)(CreateNote);

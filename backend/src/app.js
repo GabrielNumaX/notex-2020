@@ -8,8 +8,10 @@ appEx.set('port', process.env.PORT || 3030);
 
 //MIDDLEWARE
 appEx.use(cors({
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: ['x-notex-token']
+    // allowedHeaders: ['Content-Type', 'Authorization', 'x-notex-token'],
+    exposedHeaders: ['x-notex-token'],
+    // preflightContinue: true,
+    // credentials: true
 }));
 appEx.use(express.json());
 

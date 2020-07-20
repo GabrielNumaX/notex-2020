@@ -16,7 +16,6 @@
     margin-top: 100px;
     /* this sets height for every note independently (2 aside by side)  */
     align-items: flex-start;
-
 }
 
 .Note1 {
@@ -62,6 +61,7 @@
     font-size: 18px;
 }
 
+
 .PNote {
     background-color: whitesmoke;
     margin: 0;
@@ -69,8 +69,10 @@
     padding: 30px 20px 40px;
     line-height: 1.5;
     width: 88%;
-    height: calc(100% - 100px);
+    min-height: 100px;
+    height: auto;
     font-family: 'Roboto', sans-serif;
+    overflow-wrap: break-word;
 }
 
 .DivBtns {

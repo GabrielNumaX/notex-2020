@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
-import Loader from '../Loader/Loader';
+// import Loader from '../Loader/Loader';
 
 import css from './UserProfile.module.css';
 
@@ -23,14 +23,14 @@ class UserProfile extends Component {
         
         return(
 
-            <div className={css.DivUserProf}>
+            <div>
                 
                 <Header></Header>
 
+                <div className={css.DivUserProf}>
 
 
-
-
+                </div>
 
                 <Footer></Footer>
 
@@ -38,3 +38,5 @@ class UserProfile extends Component {
         )
     }
 }
+
+export default UserProfile;

@@ -28,7 +28,7 @@ const Header = (props) => {
             <div className={css.DivUl}>
                 <ul>
 
-                    <li><Link to="/" className={css.Link}>
+                    <li><Link to="/notes" className={css.Link}>
                         <FontAwesomeIcon icon={faHome} className={css.I}/>
                         Home
                         </Link>
@@ -36,27 +36,28 @@ const Header = (props) => {
 
                     <li className={css.dropdown}>
                         {/* ACA IRIA EL LINK AL USER */}
-                        <Link to="/user" className={css.Link}>
+                        {/* <Link to="/profile" className={css.Link}> */}
                             <FontAwesomeIcon icon={faUser} className={css.I}/>
                             User
-                        </Link>
+                        {/* </Link> */}
                         
                         <div className={css.dropdownUser}>
-                            
-                            <p>Profile</p>
+                            <Link to="/profile" className={css.Link}>
+                                <p>Profile</p>
+                            </Link>
 
-                            <p onClick={() => dispatch({type: 'LOG_OUT'})}>Log Out</p>
+                            <p onClick={() => {dispatch({type: 'LOG_OUT'})}}>Log Out</p>
 
                         </div>
                     </li>
 
                     <li className={css.dropdown}>
-                        <Link to="/" className={css.Link}>
+                        <Link to="/notes" className={css.Link}>
                             <FontAwesomeIcon icon={faClipboard} className={css.I}/>
                             Notes
                         </Link>
                         <div className={css.dropdownNote}>
-                            <Link to="/notes">Create Note</Link> 
+                            <Link to="/create">Create Note</Link> 
                         </div>
                     </li>
 

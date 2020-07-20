@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 
 import {connect} from 'react-redux';
 
+import {Redirect, Link} from 'react-router-dom';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+
 import css from './Home.module.css';
 import axios from 'axios';
 
@@ -9,8 +14,10 @@ import Footer from '../Footer/Footer';
 
 import { ApiRoutes as Api } from '../../Api/Api';
 
-import {setToken, axiosHeader} from '../../Auth/tokenHandler';
-// import { getNodeText } from '@testing-library/react';
+import {setToken, setUser, getToken} from '../../Auth/tokenHandler';
+
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
 
 class Home extends Component {
 
@@ -22,6 +29,26 @@ class Home extends Component {
             password: '',
             warning: [css.PWarning],
         }
+    }
+
+    componentDidMount() {
+
+       this.props.isLogged(getToken()) 
+    
+        // console.log('didmount');
+    }
+
+    componentDidUpdate(prevProps) {
+        // Uso tipico (no olvides de comparar los props):
+        if (this.props.reduxLoggedIn !== prevProps.reduxLoggedIn) {
+
+            // console.log('didUP');
+            this.props.isLogged(getToken())
+        }
+      }
+
+    componentWillUnmount() {
+        source.cancel();
     }
 
     onInputChange = (e) => {
@@ -36,33 +63,75 @@ class Home extends Component {
         axios.post(Api.USER_LOGIN, {
             email: this.state.email,
             password: this.state.password
-        })
+        }, {
+            cancelToken: source.token
+          })
         .then(res => {
 
-            console.log(res);
+                if(res.data.login){
 
-            setToken(res.headers['x-notex-token']);
+                console.log(res.data);
 
-            axiosHeader();
+                setToken(res.headers['x-notex-token']);
+                setUser(res.data.user);
 
-            this.props.isLogged(true)
+                this.props.isLogged(res.data.login);
+                // console.log(getToken());
 
-            this.setState({
-                email: '',
-                password: '',  
-            });
+                this.props.userName(res.data.user);
+
+                this.setState({
+                    email: '',
+                    password: '',  
+                });
+
+                // this.props.history.push('/notes');
+
+            }
+            else {
+
+                this.setState({
+                    email: '',
+                    password: '',  
+                });
+
+                alert(res.data.message);
+            }
 
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            
+            this.setState({password: ''})
+            console.log('esto es una pija')
+        });
     }
 
 
     render() {
+
+        // console.log(this.props.reduxLoggedIn);
+
+        if(this.props.reduxLoggedIn) {
+
+            return <Redirect to='/create'></Redirect>
+        }
         
         return(
             <div>
                 <header className={css.Header}>
+
                     <h1>NoteX</h1>
+
+                    <div className={css.DivUser}>
+
+                        <p><Link to="/signup" className={css.Link}>
+                            <FontAwesomeIcon icon={faUserPlus} className={css.I}/>
+                            Sign Up
+                            </Link>
+                        </p>
+
+                    </div>
+
                 </header>
 
                 <div className={css.DivForm}>
@@ -110,7 +179,6 @@ class Home extends Component {
 const mapGlobalStateToProps = (globalState) => {
     return {
         reduxUser: globalState.user,
-        reduxUserId: globalState.userId,
         reduxLoggedIn: globalState.login
     }
   }
@@ -118,18 +186,13 @@ const mapGlobalStateToProps = (globalState) => {
   // this writes to STORE
   const mapDispatchToProps = (dispatch) => {
     return {
-        userAndId: (userProp, userIdProp) => {
-            dispatch({type: 'USER_AND_ID', userAction: userProp, userIdAction: userIdProp})        
+        userName: (userProp) => {
+            dispatch({type: 'USER_AND_ID', userAction: userProp})        
         },
-        // logIn: (loggedInProp) => {
-        //     dispatch({type: 'LOG_IN', loggedInAction: loggedInProp})
-        // },
-        isLogged: (isLogged) => {
-            dispatch({type: 'LOG_IN_OUT', loggedInAction: isLogged})
+        isLogged: (loggedProp) => {
+            dispatch({type: 'LOG_IN', loggedInAction: loggedProp})
         },
-    //     logOut: (loggedInProp) => {
-    //       dispatch({type: 'LOG_OUT', loggedInAction: loggedInProp})
-    //   },
+        // esta no se si la voy a usar
         logOut: () => {
             dispatch({type: 'LOG_OUT', loggedInAction: localStorage.setItem('notexLog', false)})
         },

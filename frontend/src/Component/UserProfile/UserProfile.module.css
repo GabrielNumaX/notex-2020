@@ -1,0 +1,6 @@
+.DivUserProf {
+    width: 100%;
+    min-height: calc(100vh - 160px);
+    background-color: blueviolet;
+    margin-top: 60px;
+}

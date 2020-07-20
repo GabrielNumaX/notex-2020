@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+
+import { connect } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +14,8 @@ import Footer from '../Footer/Footer';
 import css from './UserCreate.module.css';
 
 import { ApiRoutes as Api } from '../../Api/Api';
+
+import {getToken} from '../../Auth/tokenHandler';
 
 class UserCreate extends Component {
 
@@ -26,9 +30,17 @@ class UserCreate extends Component {
             passFocus: false,
             passMatch: false,
             userAvailable: false,
+            emailAvailable: false,
             passRegex: false,
             emailRegex: false,
         }
+    }
+
+
+    componentDidMount() {
+
+        this.props.isLogged(getToken()) 
+        
     }
 
     onInputChange = (e) => {
@@ -39,13 +51,31 @@ class UserCreate extends Component {
 
     emailCheck = () => {
 
-        const regex = /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        const regex = /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
         if(regex.test(this.state.email)){
 
             this.setState({
                 emailRegex: true
             })
+
+            axios.post(Api.USER_CHECK, {email: this.state.email})
+            .then(response => {
+            
+                if(!response.data.message) {
+
+                    this.setState({
+                        emailAvailable: true,
+                    })
+                }
+                else {
+                    this.setState({
+                        emailAvailable: false,
+                    })
+                }
+
+            })
+            .catch(err => alert(err.message));
         }
         else{
 
@@ -99,10 +129,10 @@ class UserCreate extends Component {
 
     userCheck = () => {
 
-        axios.get(Api.USER_NAME+this.state.user)
+        axios.post(Api.USER_CHECK, {user: this.state.user})
         .then(response => {
            
-            if(response.data !== null) {
+            if(!response.data.message) {
 
                 this.setState({
                     userAvailable: true,
@@ -162,6 +192,13 @@ class UserCreate extends Component {
 
     render() {
 
+        console.log(this.props.reduxLoggedIn);
+
+        if(this.props.reduxLoggedIn) {
+
+            return <Redirect to='/notes'></Redirect>
+        }
+
         let passCss = [css.PError];
 
         if(this.state.passMatch){
@@ -170,7 +207,7 @@ class UserCreate extends Component {
         }
 
         return(
-            <div className={css.DivUserCreat}>
+            <div className={css.DivUserCreate}>
 
                 <header className={css.Header}>
 
@@ -221,11 +258,11 @@ class UserCreate extends Component {
                                     value={this.state.email}>           
                             </input>
 
-                            {/* {this.state.emailRegex ?
-                                null
+                            {this.state.emailAvailable ?
+                                <p className={css.UserTaken}>Email is already registered</p>
                                 :
-                                <p className={css.UserTaken}>An Email is required</p>
-                            }     */}
+                                null
+                            }    
 
                             <p>Password</p>
                             <input type="password" 
@@ -273,4 +310,25 @@ class UserCreate extends Component {
     }
 }
 
-export default UserCreate;
+
+// this reads from STORE
+const mapGlobalStateToProps = (globalState) => {
+    return {
+        reduxUser: globalState.user,
+        reduxLoggedIn: globalState.login
+    }
+  }
+
+   // this writes to STORE
+   const mapDispatchToProps = (dispatch) => {
+    return {
+        // userName: (userProp) => {
+        //     dispatch({type: 'USER_AND_ID', userAction: userProp})        
+        // },
+        isLogged: (loggedProp) => {
+            dispatch({type: 'LOG_IN', loggedInAction: loggedProp})
+        },
+    }
+  }
+  
+export default connect(mapGlobalStateToProps, mapDispatchToProps)(UserCreate);

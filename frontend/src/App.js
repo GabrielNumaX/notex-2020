@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React from 'react';
 // import axios from 'axios';
 import {BrowserRouter, Switch ,Route} from 'react-router-dom';
 
@@ -10,79 +10,37 @@ import './App.css';
 import Home from './Component/Home/Home';
 import CreateNote from './Component/CreateNote/CreateNote';
 import ShowNotes from './Component/ShowNotes/ShowNotes';
+import UserCreate from './Component/UserCreate/UserCreate';
+import UserProfile from './Component/UserProfile/UserProfile';
+
 
 const App = (props) => {
-
-  // const [logged, isLogged] = useState(false);
-
-  // useEffect(() => {
-
-  //   if(getToken()){
-
-  //     isLogged(true);
-  //   }
-  //   else {
-  //     isLogged(false);
-  //   }
-  // }, [])
-
-  
-  // console.log(logged);
-  // console.log('app.js')
 
 
     return (
 
       <BrowserRouter>
 
-
-        {/* <Route path="/" render={(routeProps) => this.props.reduxLoggedIn ?
-                                              <ShowNotes {...routeProps}/>
-                                              :
-                                              <Home/>
-                                              }/> */}
-
         <Switch>
 
-          {/* <Route path="/notes" component={ShowNotes}/>   */}
+          <Route exact path="/" component={Home}/>
 
-          {/* <Route path="/" component={Home}/> */}
+          <Route exact path="/create" component={CreateNote}/>
 
-          {/* <Route path="/" render={(routeProps) => this.props.reduxLoggedIn ?
-                                                  <ShowNotes {...routeProps}/>
-                                                  :
-                                                  <Redirect to={'/'}/>
-                                                  }/> */}
+          <Route exact path="/notes" component={ShowNotes}/>
 
-          <Route path="/" exact render={ () => props.reduxLoggedIn ?
-                                                    <ShowNotes/>
-                                                    :
-                                                    <Home/>
-                                                    }/>
+          <Route exact path="/signup" component={UserCreate}/>
 
-          {/* <Route path="/" exact render={(routeProps) => this.props.reduxLoggedIn ?
-                                                  <ShowNotes {...routeProps}/>
-                                                  :
-                                                  <Home/>
-                                                  }/> */}
+          <Route exact path="/profile" component={UserProfile}/>
 
-          {/* <Route path="/notes" render={(routeProps) => this.props.reduxLoggedIn ?
-                                                    <CreateNote {...routeProps}/>
-                                                  :
-                                                  <Home/>}
-                                                  /> */}
 
-          {/* <Route path="" render={(routeProps) => this.state.loggedin ? 
-					<Component {...routeProps}/> 
-					: 
-					<Redirect to={"/url de component"}/>} 
-          /> */}
-      
-          {/* <Route path="/notes" component={CreateNote}/> */}
+          {/* {
+            props.reduxLoggedIn ? <Route exact path='/notes' component={ShowNotes}/> : <Redirect to='/'/>
+          }
 
-          {/* <Route path="/create" component={CreateNote}/> */}
-
-          {/* <Route path="/" component={Home}/> */}
+          {
+            props.reduxLoggedIn ? <Route exact path="/create" component={CreateNote}/> : <Redirect to='/'/>    
+          } */}
 
         </Switch>
       
@@ -96,7 +54,6 @@ const App = (props) => {
 const mapGlobalStateToProps = (globalState) => {
   return {
       reduxUser: globalState.user,
-      reduxUserId: globalState.userId,
       reduxLoggedIn: globalState.login
   }
 }
