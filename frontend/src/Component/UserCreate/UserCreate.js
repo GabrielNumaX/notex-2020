@@ -192,7 +192,7 @@ class UserCreate extends Component {
 
     render() {
 
-        console.log(this.props.reduxLoggedIn);
+        // console.log(this.props.reduxLoggedIn);
 
         if(this.props.reduxLoggedIn) {
 
@@ -228,15 +228,16 @@ class UserCreate extends Component {
 
                 <div className={css.DivForm}>
 
-                <form className={css.Form}
+                    <form className={css.Form}
                             onSubmit={(e) => this.userSubmit(e)}>
+
                         <div className={css.DivH3}>
                             <h3>Create User</h3>
                         </div>
                         
                         <div className={css.DivInputs}>
 
-                            <p>User Name</p>
+                            <p>Username</p>
                             <input type="text" 
                                     name="user" 
                                     onChange={(e) => this.onInputChange(e)}
@@ -246,7 +247,7 @@ class UserCreate extends Component {
                             </input>
 
                             {this.state.userAvailable ?
-                               <p className={css.UserTaken}>this user is taken</p>
+                               <p className={css.UserTaken}>This Username is taken</p>
                                 :
                                 null
                             }

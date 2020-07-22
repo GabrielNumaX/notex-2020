@@ -12,6 +12,8 @@ export const ApiRoutes = {
 
     GET_PUT_DEL_NOTE: `http://localhost:${PORT}/api/notes/`, //:id de note
 
+    USER_GET: `http://localhost:${PORT}/api/user`,
+
     USER_PUT_DEL: `http://localhost:${PORT}/api/user`,
 
     USER_CREATE: `http://localhost:${PORT}/api/user/signup`,

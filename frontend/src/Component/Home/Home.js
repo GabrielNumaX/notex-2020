@@ -13,13 +13,11 @@ import axios from 'axios';
 import Footer from '../Footer/Footer';
 
 import { ApiRoutes as Api } from '../../Api/Api';
-
 import {setToken, setUser, getToken} from '../../Auth/tokenHandler';
 
-const CancelToken = axios.CancelToken;
-const source = CancelToken.source();
-
 class Home extends Component {
+
+    _isMounted = false;
 
     constructor(props){
         super(props);
@@ -32,6 +30,8 @@ class Home extends Component {
     }
 
     componentDidMount() {
+
+        this._isMounted = true;
 
        this.props.isLogged(getToken()) 
     
@@ -48,7 +48,7 @@ class Home extends Component {
       }
 
     componentWillUnmount() {
-        source.cancel();
+       this._isMounted = false;
     }
 
     onInputChange = (e) => {
@@ -60,17 +60,17 @@ class Home extends Component {
     logInSubmit = (e) => {
         e.preventDefault();
 
-        axios.post(Api.USER_LOGIN, {
-            email: this.state.email,
-            password: this.state.password
-        }, {
-            cancelToken: source.token
-          })
-        .then(res => {
+        if(this._isMounted){
+
+            axios.post(Api.USER_LOGIN, {
+                email: this.state.email,
+                password: this.state.password
+            })
+            .then(res => {
 
                 if(res.data.login){
 
-                console.log(res.data);
+                // console.log(res.data);
 
                 setToken(res.headers['x-notex-token']);
                 setUser(res.data.user);
@@ -80,30 +80,31 @@ class Home extends Component {
 
                 this.props.userName(res.data.user);
 
-                this.setState({
-                    email: '',
-                    password: '',  
-                });
+                // this.setState({
+                //     email: '',
+                //     password: '',  
+                // });
 
-                // this.props.history.push('/notes');
 
-            }
-            else {
+                }
+                else {
 
-                this.setState({
-                    email: '',
-                    password: '',  
-                });
+                    this.setState({
+                        email: '',
+                        password: '',  
+                    });
 
-                alert(res.data.message);
-            }
+                    alert(res.data.message);
+                }
+                
 
-        })
-        .catch(err => {
-            
-            this.setState({password: ''})
-            console.log('esto es una pija')
-        });
+            })
+            .catch(err => {
+                
+                this.setState({password: ''})
+                alert('Something Happened! Try Again.')
+            });
+        }
     }
 
 

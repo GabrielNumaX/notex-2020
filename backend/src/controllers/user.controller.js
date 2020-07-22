@@ -7,12 +7,25 @@ const SALT_WORK_FACTOR = 10;
 
 const userController = {};
 
-userController.getUsers = async (req, res) => {
+userController.getUser =  async (req, res) => {
 
-    const users = await userModel.find();
+    const {_id} = req.user;
 
-    res.json(users)
+    const user = await userModel
+                            .findById(_id)
+
+    res.json({
+        user: user.user,
+        email: user.email,
+    });
 }
+
+// userController.getUsers = async (req, res) => {
+
+//     const users = await userModel.find();
+
+//     res.json(users)
+// }
 
 userController.checkUser = async (req, res) => {
  
@@ -104,17 +117,6 @@ userController.postUserValidate = async (req, res) => {
     });
 };
 
-// userController.getUser =  async (req, res) => {
-
-//     const id = req.user._id;
-
-//     const user = await userModel
-//                             .findById(id)
-//                             .populate('notes');
-
-//     res.json(user);
-// }
-
 
 userController.postUser = async (req, res) => {
 
@@ -157,7 +159,7 @@ userController.putUser =  async (req, res) => {
 
     if(userCheck) {
 
-        return res.send('User NOT Available');
+        return res.json({message: false});
 
     }
 
@@ -165,7 +167,7 @@ userController.putUser =  async (req, res) => {
 
     if(mailCheck) {
 
-        return res.send('Email NOT Available');
+        return res.json({message: false});;
     }
 
     if(!user && !email) {
@@ -179,17 +181,19 @@ userController.putUser =  async (req, res) => {
         }, {new: true});
 
         res.json({
-            email: updatedUser.email
+            email: updatedUser.email,
+            message: true,
         });
     }
     else if(!email && user){
     
         const updatedUser = await userModel.findByIdAndUpdate({_id: id}, {
-            user
+            user,
         }, {new: true});
 
         res.json({
-            user: updatedUser.user
+            user: updatedUser.user,
+            message: true,
         });
     }
     else {
@@ -201,7 +205,8 @@ userController.putUser =  async (req, res) => {
 
         res.json({
             user: updatedUser.user,
-            email: updatedUser.email
+            email: updatedUser.email,
+            message: true,
         })
     }
 };
@@ -213,7 +218,7 @@ userController.deleteUser = async (req, res) => {
     await userModel.findByIdAndDelete(id);
 
     res.json({
-        user: 'User Deleted'
+        message: true
     });
 
 };
@@ -224,7 +229,7 @@ userController.changePassword = async (req, res) => {
     let { password } = req.body;
 
     if(!password) {
-        return res.send('Enter Password');
+        return res.json({message: false});
     }
 
     const salt = await bcrypt.genSalt(SALT_WORK_FACTOR)
@@ -235,7 +240,7 @@ userController.changePassword = async (req, res) => {
         password: password
     });
 
-    res.send('Password Successfully Changed');
+    res.json({message: true});;
 
 }
 
