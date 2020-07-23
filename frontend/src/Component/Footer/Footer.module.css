@@ -12,6 +12,7 @@
     background-color:#2E2C6D;
     color: #d1d959;
     margin-top: 60px;
+    /* position: relative; */
     bottom: 0;
 }
 
@@ -36,3 +37,10 @@
    font-size: 28px;
 }
 
+
+@media (max-width: 768px) {
+
+    .Footer {  
+        margin-top: 30px;
+    }
+}

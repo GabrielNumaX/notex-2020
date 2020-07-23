@@ -60,6 +60,13 @@ class Home extends Component {
     logInSubmit = (e) => {
         e.preventDefault();
 
+        if(this.state.email === '' || this.state.password === '') {
+
+            alert('Enter Email or Password');
+
+            return;
+        }
+
         if(this._isMounted){
 
             axios.post(Api.USER_LOGIN, {

@@ -95,3 +95,27 @@
 .I {
     margin-right: 5px;
 }
+
+@media (max-width: 768px) {
+
+
+    .DivCreate {
+        width: 80%;
+        height: 330px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .CreateContainer {
+        min-height: calc(100vh - 170px);
+        margin-top: 150px;
+        
+    }
+
+    .DivCreate {
+        width: 90%;
+        height: calc(100vh - 240px);
+    }
+}

@@ -138,3 +138,33 @@
     height: 300px;
     margin-bottom: 30px;
 } */
+
+@media (max-width: 768px) {
+
+    
+    .Note1 {
+        width: 90%;
+    }
+
+}
+
+@media (max-width: 500px) {
+
+    .ShowContainer {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        /* min-height: calc(100vh - 60px); */
+        min-height: calc(100vh - 280px);
+        /* min-height: 100vh; */
+        justify-content: space-around;
+        /* margin-top: 60px; */
+        margin-top: 160px;
+        /* this sets height for every note independently (2 aside by side)  */
+        align-items: flex-start;
+    }
+
+    .PNote {
+        padding: 12px 8px 18px;
+    }
+}

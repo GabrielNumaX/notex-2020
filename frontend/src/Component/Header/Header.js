@@ -57,7 +57,7 @@ const Header = (props) => {
                             Notes
                         </Link>
                         <div className={css.dropdownNote}>
-                            <Link to="/create">Create Note</Link> 
+                            <Link className={css.a} to="/create">Create Note</Link> 
                         </div>
                     </li>
 
