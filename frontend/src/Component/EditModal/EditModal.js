@@ -112,10 +112,8 @@ class EditModal extends Component {
     render() {
 
         return(
-            // <!-- The Modal -->
             <div className={css.modal}>
-
-                {/* <!-- Modal content --> */}
+                
                 <div className={css.modalContent}>
                    
                     <div className={css.DivCreate}>

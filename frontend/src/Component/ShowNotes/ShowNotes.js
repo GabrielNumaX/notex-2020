@@ -123,8 +123,6 @@ class ShowNotes extends Component {
 
     render() {
 
-        // console.log(this.props.reduxLoggedIn);
-
         if(!this.props.reduxLoggedIn) {
 
             return <Redirect to='/'></Redirect>
@@ -133,7 +131,6 @@ class ShowNotes extends Component {
         //this prints in reverse order
         const notes = this.state.notes.slice(0).reverse().map(item => {
 
-            // const ref = React.createRef();
 
             return(
                 <div className={css.Note1} key={item._id}>
