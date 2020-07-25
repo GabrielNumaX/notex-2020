@@ -28,3 +28,23 @@ export const ApiRoutes = {
   
 }
 
+// export const ApiRoutes = {
+//     GET_POST_NOTES: `http://localhost:3030/api/notes`,
+
+//     GET_PUT_DEL_NOTE: `http://localhost:3030/api/notes/`, //:id de note
+
+//     USER_GET: `http://localhost:3030/api/user`,
+
+//     USER_PUT_DEL: `http://localhost:3030/api/user`,
+
+//     USER_CREATE: `http://localhost:3030/api/user/signup`,
+
+//     USER_LOGIN: `http://localhost:3030/api/user/login`,
+
+//     USER_CHANGE_PASS: `http://localhost:3030/api/user/password`,
+
+//     USER_ID: `http://localhost:3030/api/user/`, //:id
+
+//     USER_CHECK: `http://localhost:3030/api/user/`
+  
+// }

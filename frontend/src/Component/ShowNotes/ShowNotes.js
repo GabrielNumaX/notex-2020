@@ -105,26 +105,14 @@ class ShowNotes extends Component {
         })
     }
 
-    onEditNote = (e) => {
+    onEditNote = (id) => {
+
+        // console.log(id);
         this.setState((prevState) => ({
             showModal: !prevState.showModal,
+            noteId: id,
+            noteHeight: this[`ref${id}`].clientHeight
         }))
-
-        this.setState({
-            noteId: e.target.dataset.id,
-        })
-
-        let pNote = document.getElementsByClassName(css.PNote);
-
-        for(let i = 0; i < pNote.length; i++){
-            if(pNote[i].dataset.id === e.target.dataset.id){
-
-                this.setState({
-                    noteHeight: pNote[i].clientHeight,
-        
-                })
-            }
-        };
     }
 
     closeModal = () => {
@@ -145,6 +133,8 @@ class ShowNotes extends Component {
         //this prints in reverse order
         const notes = this.state.notes.slice(0).reverse().map(item => {
 
+            // const ref = React.createRef();
+
             return(
                 <div className={css.Note1} key={item._id}>
 
@@ -158,13 +148,16 @@ class ShowNotes extends Component {
                            
                     </div> */}
 
-                     {/* este data esta para comparar y sacar el height */}
-                     <p className={css.PNote} data-id={item._id}>{item.note}</p>
+                    {/* esto saca la altura con refs dynamic */}
+                     {/* <p className={css.PNote} ref={ref}>{item.note}</p> */}
+                        <p className={css.PNote} 
+                            ref={input => {this[`ref${item._id}`] = input;}}
+                            >{item.note}</p>
+                     
                        
                     <div className={css.DivBtns}>
                         <button type="button"
-                            data-id={item._id}
-                            onClick={(e) => this.onEditNote(e)}>
+                            onClick={() => this.onEditNote(item._id)}>
                             <FontAwesomeIcon icon={faUserEdit} className={css.I}></FontAwesomeIcon>
                                 Edit
                         </button>
