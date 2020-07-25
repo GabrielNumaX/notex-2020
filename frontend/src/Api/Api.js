@@ -1,53 +1,30 @@
 //ESTO NO SIRVE XQ TOMA EL PORT DE REACT -> :3000
 
-// const protocol = window.location.protocol;
-// const URLmaster = window.location.host;
+const protocol = window.location.protocol;
+const URLmaster = window.location.host;
 
 // const comentariosAjax = `${protocol}//${URLmaster}/Comentarios/ajax_listado`;
 
-const PORT = process.env.PORT || 3030;
+// const PORT = process.env.PORT || 3030;
 
 export const ApiRoutes = {
-    GET_POST_NOTES: `http://localhost:${PORT}/api/notes`,
+    GET_POST_NOTES: `${protocol}//${URLmaster}/api/notes`,
 
-    GET_PUT_DEL_NOTE: `http://localhost:${PORT}/api/notes/`, //:id de note
+    GET_PUT_DEL_NOTE: `${protocol}//${URLmaster}/api/notes/`, //:id de note
 
-    USER_GET: `http://localhost:${PORT}/api/user`,
+    USER_GET: `${protocol}//${URLmaster}/api/user`,
 
-    USER_PUT_DEL: `http://localhost:${PORT}/api/user`,
+    USER_PUT_DEL: `${protocol}//${URLmaster}/api/user`,
 
-    USER_CREATE: `http://localhost:${PORT}/api/user/signup`,
+    USER_CREATE: `${protocol}//${URLmaster}/api/user/signup`,
 
-    USER_LOGIN: `http://localhost:${PORT}/api/user/login`,
+    USER_LOGIN: `${protocol}//${URLmaster}/api/user/login`,
 
-    USER_CHANGE_PASS: `http://localhost:${PORT}/api/user/password`,
+    USER_CHANGE_PASS: `${protocol}//${URLmaster}/api/user/password`,
 
-    USER_ID: `http://localhost:${PORT}/api/user/`, //:id
+    USER_ID: `${protocol}//${URLmaster}/api/user/`, //:id
 
-    USER_CHECK: `http://localhost:${PORT}/api/user/`
+    USER_CHECK: `${protocol}//${URLmaster}/api/user/`
   
 }
 
-// /api/notes
-// 	->getNotes
-
-// /api/notes/:id
-// 	->getNote
-// 	->putNote
-// 	->deleteNote
-
-// /api/user
-// 	->getUsers
-// 	->postUserValidate
-
-// /api/user/create
-// 	->postUser
-
-// /api/user/:id
-// 	->getUser
-// 	->putUser
-// 	->deleteUser
-
-// /api/user/:id/notes
-// 	->postUserNote
-//  	->getUserNote
