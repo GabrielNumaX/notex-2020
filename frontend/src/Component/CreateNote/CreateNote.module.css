@@ -7,13 +7,28 @@
 .CreateContainer {
     width: 100%;
     display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
     flex-wrap: wrap;
     min-height: calc(100vh - 60px);
-    justify-content: space-around;
+    /* min-height: 100vh; */
+    justify-content: flex-start;
     /* margin-top: 60px; */
     margin-top: 100px;
     /* this sets height for every note independently (2 aside by side)  */
-    align-items: flex-start;
+    /* align-items: flex-start; */
+}
+
+.Container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: calc(100vh - 170px);
+    justify-content: space-around;
 }
 
 .DivCreate {

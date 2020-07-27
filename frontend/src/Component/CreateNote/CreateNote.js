@@ -70,8 +70,11 @@ class CreateNote extends Component {
         }
 
         return(
+
             <div className={css.CreateContainer}>
                 <Header></Header>
+
+                <div className={css.Container}>
 
                 <div className={css.DivCreate}>
 
@@ -100,6 +103,8 @@ class CreateNote extends Component {
 
                     </div>
   
+                </div>
+                
                 </div>
 
                 <Footer/>
