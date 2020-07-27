@@ -156,6 +156,7 @@ class UserCreate extends Component {
     }
 
     userSubmit = (e) => {
+
         e.preventDefault();
 
         const check = this.submitCheck();
@@ -179,6 +180,8 @@ class UserCreate extends Component {
                 })
 
                 alert('User Created');
+
+                this.props.history.push('/')
             })
             .catch(err => {
                 alert(err.message);

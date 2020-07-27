@@ -4,7 +4,7 @@ import {Redirect} from 'react-router-dom';
 import {getToken} from '../../Auth/tokenHandler';
 import { format } from 'timeago.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { connect } from 'react-redux';
 
@@ -121,16 +121,9 @@ class ShowNotes extends Component {
         })
     }
 
-    render() {
+    Notes = () => {
 
-        if(!this.props.reduxLoggedIn) {
-
-            return <Redirect to='/'></Redirect>
-        }
-
-        //this prints in reverse order
-        const notes = this.state.notes.slice(0).reverse().map(item => {
-
+       return this.state.notes.slice(0).reverse().map(item => {
 
             return(
                 <div className={css.Note1} key={item._id}>
@@ -140,18 +133,11 @@ class ShowNotes extends Component {
                         <p>{format(item.date)}</p>
                     </div>
 
-                    {/* <div className={css.DivNote}>
-
-                           
-                    </div> */}
-
-                    {/* esto saca la altura con refs dynamic */}
-                     {/* <p className={css.PNote} ref={ref}>{item.note}</p> */}
-                        <p className={css.PNote} 
-                            ref={input => {this[`ref${item._id}`] = input;}}
-                            >{item.note}</p>
-                     
-                       
+                    <p className={css.PNote} 
+                        ref={input => {this[`ref${item._id}`] = input;}}
+                        >{item.note}</p>
+                    
+                    
                     <div className={css.DivBtns}>
                         <button type="button"
                             onClick={() => this.onEditNote(item._id)}>
@@ -168,7 +154,41 @@ class ShowNotes extends Component {
 
                 </div>
             )
-        });
+       })
+    }
+
+    NoNote = () => {
+
+        return  <div className={css.DivNoNote}>
+                    <h1 className={css.H1Create}>Create your First Note</h1>
+
+                    <div className={css.DivBtnNoNote}>
+                        <button type="button"
+                            onClick={() => this.props.history.push('/create')}>
+                            <FontAwesomeIcon icon={faPlusCircle} className={css.I}></FontAwesomeIcon>
+                                Create Note
+                        </button>
+                    </div>
+                </div>
+    }
+
+    render() {
+
+        if(!this.props.reduxLoggedIn) {
+
+            return <Redirect to='/'></Redirect>
+        }
+
+
+        let notes = null;
+
+        if(Array.isArray(this.state.notes) && this.state.notes.length){
+
+            notes = this.Notes();
+        }
+        else {
+            notes = this.NoNote();
+        }
 
         return(
 

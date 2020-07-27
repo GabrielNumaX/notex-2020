@@ -18,6 +18,40 @@
     align-items: flex-start;
 }
 
+.DivNoNote {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.H1Create {
+    background-color: #403d98;
+    border-radius: 3px;
+    box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.1),
+ 	            2px 2px 6px rgba(0,0,0,0.8),
+  	            inset -2px -2px 10px rgba(255, 255, 255, 0.05),
+                inset 2px 2px 10px rgba(0,0,0,0.5);
+    color: #dfe58d;
+    padding: 10px 18px; 
+}
+
+.DivBtnNoNote button {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 6px 10px;
+    margin: 38px 0;
+    border-radius: 3px;
+    cursor: pointer;
+    background-color: #403d98;
+    color: #d1d959;
+    letter-spacing: 0.5px;
+    border: none;
+    box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.1),
+ 	            2px 2px 6px rgba(0,0,0,0.8),
+  	            inset -2px -2px 10px rgba(255, 255, 255, 0.05),
+                inset 2px 2px 10px rgba(0,0,0,0.5);
+}
+
 .Note1 {
     background-color: #403d98;
     width: 70%;
@@ -155,7 +189,8 @@
         display: flex;
         flex-wrap: wrap;
         /* min-height: calc(100vh - 60px); */
-        min-height: calc(100vh - 280px);
+        /* min-height: calc(100vh - 280px); */
+        min-height: calc(100vh - 250px);
         /* min-height: 100vh; */
         justify-content: space-around;
         /* margin-top: 60px; */
@@ -166,5 +201,10 @@
 
     .PNote {
         padding: 12px 8px 18px;
+    }
+
+    .H1Create {
+        font-size: 20px;
+        margin-top: 50px;
     }
 }
